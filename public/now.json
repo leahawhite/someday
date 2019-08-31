@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "alias": "https://someday-app.now.sh",
+  "name": "someday",
+  "routes": [
+      {
+        "src": "^/static/(.*)",
+        "dest": "/static/$1"
+      },
+      {
+        "src": ".*",
+        "dest": "/index.html"
+      }
+  ]
+}
