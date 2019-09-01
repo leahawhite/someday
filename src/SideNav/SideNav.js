@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Folder from '../Folder/Folder';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { slide as Menu } from 'react-burger-menu';
 import store from '../store';
 import './sidenav.css'
 
@@ -10,6 +11,9 @@ export default class SideNav extends Component {
       selected: null
     }
   }
+  showSettings = event => {
+    event.preventDefault();
+  }
   selectFolder = folder => {
     this.setState({
       selected: folder
@@ -19,23 +23,23 @@ export default class SideNav extends Component {
     const folderList = store.folders.map((folder, i) => {
       const isSelected = folder === this.state.selected
       return (
-        <Folder
-          key={i}
-          index={i}
-          className={`folder ${isSelected ? 'active' : ''}`}
-          text={folder.text}
-          icon={folder.icon}
-          selectFolder={this.selectFolder}
-        />
+        <li key={i} className={`menu-item ${isSelected ? 'active' : ''}`}>
+          <div className="folder-contents" key={i} onClick={e => {this.selectFolder(e)}}>
+            <div className="folder-icon">
+              <FontAwesomeIcon icon={folder.icon} size="lg" />
+            </div>
+            <div className="folder-text">
+              <span className="folder-text">{folder.text}</span>
+            </div>
+          </div>
+        </li>
       )
     })
 
     return (
-      <nav className="folder-list-nav">
-        <ul className="folder-list">
-          {folderList}
-        </ul>
-      </nav>
+      <Menu>
+        {folderList}
+      </Menu>
     )
   }
 }
