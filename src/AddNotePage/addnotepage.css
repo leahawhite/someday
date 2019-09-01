@@ -1,0 +1,38 @@
+.item-content {
+  padding: 5%;
+  border: 1px solid black;
+  border-radius: 5px;
+  line-height: 1.25em;
+  background-color: #F8F8F8;
+}
+
+h2 {
+  text-align: center;
+}
+
+.item-content label {
+  font-weight: bold;
+}
+
+.item-content input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.item-content select {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.highlight {
+  display: inline;
+}
+
+.button-container {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+button {
+  width: 100px;
+}

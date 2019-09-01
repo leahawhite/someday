@@ -1,0 +1,21 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+  margin: 0;
+  background-color: #F5F5F5;
+}
+
+header h1 {
+  font-size: 28px;
+  margin: 0 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+header nav a {
+  margin-right: 20px;
+}

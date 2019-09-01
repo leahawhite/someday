@@ -1,0 +1,32 @@
+.item-content {
+  padding: 5%;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  line-height: 1.25em;
+  background-color: #F8F8F8;
+}
+
+.item-content label {
+  font-weight: bold;
+}
+
+.item-content input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.highlight {
+  display: inline;
+}
+
+.button-container {
+  margin-bottom: 10px;
+}
+
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}

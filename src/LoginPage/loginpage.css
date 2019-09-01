@@ -1,0 +1,25 @@
+.form-container {
+  display: block;
+  text-align: left;
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 5%;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button {
+  display: block;
+  text-align: center;
+  margin: 10px auto 20px;
+  padding: 4px 8px;
+}
+
+p {
+  line-height: 0.75em;
+  margin-bottom: 0;
+}
