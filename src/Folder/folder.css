@@ -1,0 +1,13 @@
+.folder-contents {
+  display: flex;
+}
+
+.folder-icon {
+  width: 25%;
+  margin-right: 15px;
+}
+
+.folder-text {
+  text-align: left;
+}
+

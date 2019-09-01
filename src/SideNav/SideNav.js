@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
+import Folder from '../Folder/Folder';
+import store from '../store';
 import './sidenav.css'
 
 export default class SideNav extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: null
+    }
+  }
+  selectFolder = folder => {
+    this.setState({
+      selected: folder
+    })
+  }
   render() {
+    const folderList = store.folders.map((folder, i) => {
+      const isSelected = folder === this.state.selected
+      return (
+        <Folder
+          key={i}
+          index={i}
+          className={`folder ${isSelected ? 'active' : ''}`}
+          text={folder.text}
+          icon={folder.icon}
+          selectFolder={this.selectFolder}
+        />
+      )
+    })
+
     return (
       <nav className="folder-list-nav">
         <ul className="folder-list">
-          <a href="#"><li className="folder" id="first">Watch</li></a>
-          <a href="#"><li className="folder">Read</li></a>
-          <a href="#"><li className="folder">Listen</li></a>
-          <a href="#"><li className="folder">Eat</li></a>
-          <a href="#"><li className="folder">Do</li></a>
-          <a href="#"><li className="folder">Go</li></a>
-          <a href="#"><li className="folder">Archives</li></a>
+          {folderList}
         </ul>
       </nav>
     )
