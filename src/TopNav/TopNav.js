@@ -1,27 +1,56 @@
 import React, { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import './topnav.css'
 
 export default class TopNav extends Component {
 
-  // links on right-hand side: Add New Item, Log In, Log Out, Sign Up
-  // links on left-hand side: Someday
-  render() {
+  renderLogoutLink() {
+    const { onLogout } = this.props
     return (
-      <header role="banner">
+      <nav className="TopNav_logged-in" role="navigation">
+        <Link
+          className="topnavlink left" 
+          to='/dashboard'>
+          DASHBOARD
+        </Link>
+        <Link
+          className="topnavlink" 
+          to='/add-note'>
+          ADD NOTE
+        </Link>
+        <Link
+          className="topnavlink right" 
+          onClick={onLogout}
+          to='/'>
+          LOGOUT
+        </Link>
+      </nav>
+    )
+  }
+  
+  renderLoginLink() {
+    return (
+      <nav className="TopNav_not-logged-in" role="navigation">
+        <div className="TopNav_not-logged-in links">
+          <Link className="navlink-right" to='/signup'>
+            SIGN UP
+          </Link>
+        </div>
+      </nav>
+    )
+  }
+  render() {
+    const { loggedIn } = this.props
+    return (
+      <header className="Topnav" role="banner">
         <h1>
-          <a href="#">Someday</a>
+          <NavLink exact to='/dashboard' activeClassName="hidden">Someday</NavLink>
         </h1>
-        <nav role="navigation">
-          <div>
-            <a href="#">
-              ADD NEW ITEM
-            </a>
-            <a href="#">
-              LOG OUT
-            </a>
-          </div>
-        </nav>
+        {loggedIn
+          ? this.renderLogoutLink()
+          : this.renderLoginLink()}
       </header>
     )
   }
 }
+
