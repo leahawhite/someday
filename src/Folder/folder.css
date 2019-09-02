@@ -1,10 +1,21 @@
-.folder-contents {
+.folder {
   display: flex;
+  padding: 5%;
+  font-size: 20px;
+  text-align: left;
+  margin-bottom: 5px;
+  border: 1px solid #D3D3D3;
+  cursor: pointer;
 }
 
+.folder:hover {
+  background-color: #DCDCDC;
+} 
+
+
 .folder-icon {
-  width: 25%;
-  margin-right: 15px;
+  width: 50px;
+  margin: 0 10px;
 }
 
 .folder-text {

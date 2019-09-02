@@ -61,7 +61,7 @@ export default class NotesPage extends Component {
       return <Spinner />
     } else if (notes.length) {
         return (
-          <div>
+          <>  
             <form className="sort-results-form">
               <label className="sort-results" htmlFor="sort-results">Sort by:</label>
               <select 
@@ -77,7 +77,7 @@ export default class NotesPage extends Component {
               </select>
             </form>
             {noteList}
-          </div>
+          </>
         )
       } else {
         // return null? or else this pops on the screen first thing
