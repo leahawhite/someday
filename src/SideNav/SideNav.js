@@ -11,7 +11,6 @@ export default class SideNav extends Component {
     }
   }
   selectFolder = folder => {
-    console.log('folder selected', folder)
     this.setState({
       selected: folder
     }, () => {

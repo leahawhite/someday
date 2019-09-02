@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import SideNav from '../SideNav/SideNav';
 import './addnotepage.css'
 
 export default class AddNotePage extends Component {
   render () {
     return (
       <>
-        <div className="item-content">
+      <div className="row">
+        <SideNav />
+        <div className="add-item-form">
           <h2>Add New Item</h2>
           <form>
             <div>
@@ -48,6 +51,7 @@ export default class AddNotePage extends Component {
               <button type="button">Cancel</button>
             </div>
           </form>
+        </div>
         </div>
       </>
     )

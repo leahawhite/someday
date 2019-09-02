@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import TokenService from '../services/TokenService';
+import TokenService from '../services/token-service';
 import './loginpage.css'
 
 export default class LoginPage extends Component {
@@ -23,8 +23,7 @@ export default class LoginPage extends Component {
   render() {
     return (
       <>
-        <main className="main-content">
-          <div className="login-container">
+        <div className="login-container">
           <header className="login-header">
             <Link to='/'><h1>Someday</h1></Link>
             <p>Bookmark the latest cultural hits so that you too can experience them -- someday.</p>
@@ -59,8 +58,7 @@ export default class LoginPage extends Component {
                 <p>Demo password: demo123</p>
             </form>
           </div>
-          </div>
-        </main>
+        </div>
         {this.state.redirect && 
           <Redirect to={'/dashboard'} />
         }

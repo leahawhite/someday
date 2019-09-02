@@ -10,6 +10,10 @@ h1, h2 {
   margin: 0;
 }
 
+a, input, select, button {
+  cursor: pointer;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -17,3 +21,17 @@ h1, h2 {
   /* max-width: 1200px; */
   margin: 0 auto;
 }
+
+main {
+  display: flex; 
+  justify-content: center;
+}
+
+/* main {
+  margin: 0 auto;
+  padding: 1% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */

@@ -1,25 +1,26 @@
-.item-content {
+.add-item-form {
   padding: 5%;
   border: 1px solid black;
   border-radius: 5px;
   line-height: 1.25em;
   background-color: #F8F8F8;
+  margin: 40px auto;
 }
 
 h2 {
   text-align: center;
 }
 
-.item-content label {
+.add-item-form label {
   font-weight: bold;
 }
 
-.item-content input {
+.add-item-form input {
   width: 100%;
   margin-bottom: 10px;
 }
 
-.item-content select {
+.add-item-form select {
   width: 100%;
   margin-bottom: 10px;
 }

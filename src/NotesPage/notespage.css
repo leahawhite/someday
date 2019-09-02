@@ -1,47 +1,31 @@
 .row {
   display: flex;
+  /* justify-content: space-between; */
+  width: 100%;
+  margin: 40px 0;
 }
 
 .item-list {
-  width: 80%;
-  padding: 5%;
+  padding: 0 5%;
   position: relative;
 }
 
 .sort-results-form {
+  height: 40px;
   text-align: right;
-  margin-bottom: 10px;
 }
 
-.item-content {
-  padding: 5%;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  line-height: 1.25em;
+.sort-results-form label {
+  margin-right: 10px;
+}
+
+.sort-results-form select {
+  padding: 3px 8px;
   background-color: #F8F8F8;
-}
-
-.item-content label {
-  font-weight: bold;
-}
-
-.item-content input {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.highlight {
-  display: inline;
-}
-
-.button-container {
-  margin-bottom: 10px;
-}
-
-.left {
-  text-align: left;
-}
-.right {
-  text-align: right;
+  /* border: 1px solid #D3D3D3; */
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  font-size: 16px;
 }
