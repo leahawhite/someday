@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import TopNav from '../TopNav/TopNav';
 import './addnotepage.css'
 
 export default class AddNotePage extends Component {
   render () {
     return (
       <>
-        <TopNav />
-        <div class="item-content">
+        <div className="item-content">
           <h2>Add New Item</h2>
           <form>
             <div>
@@ -45,13 +43,13 @@ export default class AddNotePage extends Component {
               <label>Notes</label>
               <input type="textbox"/>
             </div>
-            <div class="button-container">
+            <div className="button-container">
               <button type="button">Submit</button>
               <button type="button">Cancel</button>
             </div>
           </form>
-          </div>
-        </>
+        </div>
+      </>
     )
   }
 }

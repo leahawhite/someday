@@ -11,8 +11,11 @@ export default class SideNav extends Component {
     }
   }
   selectFolder = folder => {
+    console.log('folder selected', folder)
     this.setState({
       selected: folder
+    }, () => {
+      this.props.onFolderSelect(folder.id)
     })
   }
   render() {
@@ -20,8 +23,9 @@ export default class SideNav extends Component {
       const isSelected = folder === this.state.selected
       return (
         <Folder
-          key={i}
+          key={folder.id}
           index={i}
+          folder={folder}
           className={`folder ${isSelected ? 'active' : ''}`}
           text={folder.text}
           icon={folder.icon}
