@@ -6,7 +6,7 @@ export default function Button(props) {
     <button 
       type={props.btnType} 
       className={props.btnClass} 
-      onChange={props.onChange} 
+      onClick={props.onClick} 
       onSubmit={props.onSubmit}
     >
       <span>{props.btnText}</span>

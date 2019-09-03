@@ -1,4 +1,4 @@
-.item-content {
+.note-content {
   padding: 5%;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -8,16 +8,16 @@
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-.item-content:hover {
+.note-content:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-.item-content label {
+.note-content label {
   font-weight: bold;
   margin-right: 10px;
 }
 
-.item-content input {
+.note-content input {
   width: 100%;
   margin-bottom: 10px;
 }
