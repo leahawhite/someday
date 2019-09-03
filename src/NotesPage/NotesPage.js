@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SideNav from '../SideNav/SideNav';
 import Spinner from '../Spinner/Spinner';
 import Note from '../Note/Note';
+import NoteForm from '../NoteForm/NoteForm';
 import store from '../store';
 import './notespage.css';
 
@@ -14,7 +15,9 @@ export default class NotesPage extends Component {
       notes: [],
       sort: 'date',
       error: null,
-      selectedFolderId: null
+      selectedFolderId: null,
+      editId: null,
+      updatedNote: {}
     }
   }
 
@@ -36,6 +39,60 @@ export default class NotesPage extends Component {
     })
   }
 
+  handleNoteSubmit = e => {
+    e.preventDefault()
+    // validation and fetch patch or post with input values
+    // get note by id and update note with new info
+    // then resetFields
+    // then updateNotes(newNote)
+    this.setState({
+      editId: null
+    })
+  }
+
+  handleNoteCancel = id => {
+    this.setState({
+      editId: null
+    })
+  }
+
+  handleNoteEdit = id => {
+    this.setState({
+      editId: id
+    })
+  }
+
+  updateNote = e => {
+    const field = e.target.name
+    const note = this.state.noteEdited
+    note[field] = e.target.value
+    return this.setState({ 
+      category: this.props.note.folder || "", 
+      what: this.props.note.what || "",
+      where: this.props.note.where || "",
+      who: this.props.note.who || "",
+      link: this.props.note.link || "",
+      highlight: this.props.note.highlight || "",
+      notes: this.props.note.notes | "", 
+    })
+  }
+
+  updateNotes = updatedNote => {
+    this.setState({
+      notes: this.state.notes.map(nt =>
+        (nt.id !== updatedNote.id) ? nt : updatedNote)
+    })
+  }
+
+  handleNoteDelete = noteId => {
+    if (!window.confirm('Are you sure?')) {
+      return
+    }
+      const newNotes = this.state.notes.filter(nt =>
+        nt.id !== noteId)
+      this.setState({ notes: newNotes })
+   }
+
   sortResults = results => {
     const { sort } = this.state
     console.log('sort', sort)
@@ -51,10 +108,27 @@ export default class NotesPage extends Component {
   }
 
   renderNotes() {
-    const { notes, loading, selectedFolderId } = this.state
+    const { notes, loading, selectedFolderId, editId } = this.state
     const results = notes.filter(note => note.folder === selectedFolderId)
-    const noteList = results.length ? this.sortResults(results).map(note => {
-      return <Note key={note.id} note={note} />
+    console.log('results', results)
+    const noteList = results.length ? this.sortResults(results).map((note, index) => {
+      if (editId) {
+        return <NoteForm 
+                key={index} 
+                note={note} 
+                onSubmit={this.handleNoteSubmit} 
+                onCancel={this.handleNoteCancel} 
+                />
+      } else {
+        return <Note 
+                key={index} 
+                index={index} 
+                note={note} 
+                onEdit={this.handleNoteEdit} 
+                onDelete={this.handleNoteDelete}
+                onArchive={this.handleNoteArchive} 
+               />
+      }
     }) : null 
     
     if (loading) {
