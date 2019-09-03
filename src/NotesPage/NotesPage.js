@@ -16,10 +16,19 @@ export default class NotesPage extends Component {
       sort: 'date',
       error: null,
       selectedFolderId: null,
+      selectedNote: null,
       editId: null,
-      updatedNote: {}
+      updatedNote: {},
+      folder: "",  
+      what: "",
+      where: "",
+      who: "",
+      link: "",
+      highlight: "",
+      noteNotes: "", 
     }
   }
+  // need to update values and pass them to noteform -- 
 
   componentDidMount() {
     this.setState({
@@ -41,6 +50,8 @@ export default class NotesPage extends Component {
 
   handleNoteSubmit = e => {
     e.preventDefault()
+    const { folder, what, where, who, link, highlight, noteNotes } = this.state
+    console.log('where', where)
     // validation and fetch patch or post with input values
     // get note by id and update note with new info
     // then resetFields
@@ -48,6 +59,11 @@ export default class NotesPage extends Component {
     this.setState({
       editId: null
     })
+    const items = new Map([['folder', folder], ['what', what], ['where', where], ['who', who], ['link', link], ['highlight', highlight], ['noteNotes', noteNotes]])
+    const updatedNote = Object.fromEntries(items)
+    this.setState({ updatedNote })
+    console.log('this.state.updatedNote sub', this.state.updatedNote)
+    this.updateNotes(this.state.updatedNote)
   }
 
   handleNoteCancel = id => {
@@ -56,46 +72,61 @@ export default class NotesPage extends Component {
     })
   }
 
-  handleNoteEdit = id => {
+  handleNoteEdit = note => {
     this.setState({
-      editId: id
+      selectedNote: note,
+      editId: note.id,
+      folder: note.folder,  
+      what: note.what,
+      where: note.where,
+      who: note.who,
+      link: note.link,
+      highlight: note.highlight,
+      noteNotes: note.noteNotes, 
     })
   }
 
-  updateNote = e => {
-    const field = e.target.name
-    const note = this.state.noteEdited
-    note[field] = e.target.value
-    return this.setState({ 
-      category: this.props.note.folder || "", 
-      what: this.props.note.what || "",
-      where: this.props.note.where || "",
-      who: this.props.note.who || "",
-      link: this.props.note.link || "",
-      highlight: this.props.note.highlight || "",
-      notes: this.props.note.notes | "", 
-    })
+  handleChangeFolder = e => {
+    this.setState({ folder: e.target.value })
   }
-
+  handleChangeWhat = e => {
+    this.setState({ what: e.target.value })
+  }
+  handleChangeWhere = e => {
+    this.setState({ where: e.target.value })
+  }
+  handleChangeWho = e => {
+    this.setState({ who: e.target.value })
+  }
+  handleChangeLink = e => {
+    this.setState({ link: e.target.value })
+  }
+  handleChangeHighlight = e => {
+    this.setState({ highlight: e.target.value })
+  }
+  handleChangeNotes = e => {
+    this.setState({ noteNotes: e.target.value })
+  }
   updateNotes = updatedNote => {
     this.setState({
       notes: this.state.notes.map(nt =>
         (nt.id !== updatedNote.id) ? nt : updatedNote)
     })
+    console.log('updatedNOte', updatedNote)
+    console.log('this.state.notes', this.state.notes)
   }
 
-  handleNoteDelete = noteId => {
+  handleNoteDelete = id => {
     if (!window.confirm('Are you sure?')) {
       return
     }
-      const newNotes = this.state.notes.filter(nt =>
-        nt.id !== noteId)
-      this.setState({ notes: newNotes })
-   }
+    const newNotes = this.state.notes.filter(nt =>
+      nt.id !== id)
+    this.setState({ notes: newNotes })
+  }
 
   sortResults = results => {
     const { sort } = this.state
-    console.log('sort', sort)
     if (sort) {
       if (sort === 'date') {
         results = results.sort((a,b) => (a.date_created < b.date_created) ? 1 : ((b.date_created < a.date_created) ? -1 : 0));
@@ -109,13 +140,28 @@ export default class NotesPage extends Component {
 
   renderNotes() {
     const { notes, loading, selectedFolderId, editId } = this.state
+    const { folder, what, where, who, link, highlight, noteNotes } = this.state
     const results = notes.filter(note => note.folder === selectedFolderId)
     console.log('results', results)
     const noteList = results.length ? this.sortResults(results).map((note, index) => {
-      if (editId) {
+      if (note.id === editId) {
         return <NoteForm 
                 key={index} 
-                note={note} 
+                note={note}
+                folder={folder}
+                what={what}
+                where={where}
+                who={who}
+                link={link}
+                highlight={highlight}
+                noteNotes={noteNotes}
+                changeFolder={this.handleChangeFolder}
+                changeWhat={this.handleChangeWhat}
+                changeWhere={this.handleChangeWhere}
+                changeWho={this.handleChangeWho}
+                changeLink={this.handleChangeLink}
+                changeHighlight={this.handleChangeHighlight}
+                changeNotes={this.handleChangeNotes}
                 onSubmit={this.handleNoteSubmit} 
                 onCancel={this.handleNoteCancel} 
                 />
