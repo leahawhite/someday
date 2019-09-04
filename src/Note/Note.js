@@ -38,7 +38,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Notes</label>
-          <span>{note.notes}</span>
+          <span>{note.thoughts}</span>
         </div>
         <div>
           <label>Last edited</label>
