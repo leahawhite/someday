@@ -1,42 +1,32 @@
-.row {
+.notes-header {
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 20px 10px;
+}
+
+.notes-content {
+  display: flex;
   width: 100%;
-  margin: 40px 0;
 }
 
 .notelist {
-  margin-top: 40px;
+  margin: 0 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.items {
-  display: flex; 
-  flex-direction: column;
-  justify-content: center;
   align-content: center;
-  padding: 0 5%;
-  position: relative;
-  width: 100%;
 }
 
 .sort-results-form {
-  height: 40px;
-  text-align: right;
+  text-align: center;
 }
 
-.sort-results-form label {
-  margin-right: 10px;
+.sort-results {
+  width: 49.5%;
+  height: 3em;
 }
-
-.sort-results-form select {
-  padding: 3px 8px;
-  background-color: #F8F8F8;
-  /* border: 1px solid #D3D3D3; */
-  border: none;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  font-size: 16px;
+.sort-results-form button:nth-child(1) {
+  margin-right: 1%;
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SideNav from '../SideNav/SideNav';
 import Spinner from '../Spinner/Spinner';
 import EmptyFolder from '../EmptyFolder/EmptyFolder';
+import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
 import store from '../store';
@@ -38,10 +39,10 @@ export default class NotesPage extends Component {
     })
   }
 
-  handleUpdateSort = e => {
+  handleUpdateSort = sort => {
     this.setState({
-      sort: e.target.value
-    })
+      sort: sort
+    }, () => console.log(this.state.sort))
   }
 
   handleNoteSelect = note => {
@@ -163,7 +164,11 @@ export default class NotesPage extends Component {
         </div>
       )
     } else if (selectedFolderId) {
-      return <h2 className="selectedFolder-title">{selectedFolder.text}</h2>
+      return (
+        <div className="notelist-header">
+          <h2 className="selectedFolder-title">{selectedFolder.text}</h2>
+        </div>
+      )
     }
   }
 
@@ -207,12 +212,6 @@ export default class NotesPage extends Component {
       }
     }) : null 
 
-    // MAIN NOTES SECTION:
-    // if loading, show loader centered
-    // if no notes, show Empty Folder component centered
-    // if notes, show notes
-    // at bottom of list of notes, another Add Notes button
-
     if (loading) {
       return <Spinner />
     } else if (selectedFolder && !noteList) {
@@ -222,7 +221,21 @@ export default class NotesPage extends Component {
         return (
           <>  
             <form className="sort-results-form">
-              <label className="sort-results" htmlFor="sort-results">Sort by:</label>
+              <Button 
+                btnClass="sort-results" 
+                btnText="Most recent" 
+                btnType="button" 
+                btnId="date"
+                onClick={() => this.handleUpdateSort("date")} 
+              />
+              <Button 
+                btnClass="sort-results" 
+                btnText="Highlighted" 
+                btnType="button" 
+                id="highlighted"
+                onClick={() => this.handleUpdateSort("highlighted")} 
+              />
+              {/* <label className="sort-results" htmlFor="sort-results">Sort by:</label>
               <select 
                 className="sort-select" 
                 type="text" 
@@ -233,7 +246,7 @@ export default class NotesPage extends Component {
               >
                 <option name="sort" value="date">Most recent</option>
                 <option name="sort" value="highlighted">Highlighted</option>
-              </select>
+              </select> */}
             </form>
             {noteList}
           </>
@@ -244,20 +257,20 @@ export default class NotesPage extends Component {
   render() {
     const { error } = this.state
     return (
-      <div className="row">
-        <SideNav onFolderSelect={this.props.onFolderSelect}/>
-        <section className="notelist">
-          <div className="header">
-            {this.renderHeader()}
-          </div>
-          <div className="items">
+      <>
+        <section className="notes-header">
+          {this.renderHeader()}
+        </section>
+        <section className="notes-content">
+          <SideNav onFolderSelect={this.props.onFolderSelect}/>
+          <div className="notelist">
             <div role="alert">
               {error && <p className="error">{error}</p>}
             </div>
             {this.renderNotes()}
           </div>
         </section>
-      </div>
+      </>
     )
   }
 }
