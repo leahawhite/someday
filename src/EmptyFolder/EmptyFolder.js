@@ -9,10 +9,10 @@ export default class EmptyFolder extends Component {
     const { selectedFolder } = this.props
     return (
       <div className="no-notes">
-        <div className="folder-icon">
-          <FontAwesomeIcon icon={selectedFolder.icon} size="5x" />
+        <div className="no-notes-icon">
+          <FontAwesomeIcon icon={selectedFolder.icon} size="3x" />
         </div>
-        <p className="no-notes-content">No {selectedFolder.text} notes yet</p>
+        <p className="no-notes-content">No notes yet</p>
         <Link to='/add-note'>
           <Button btnType="button" btnText="Add a Note" />
         </Link>

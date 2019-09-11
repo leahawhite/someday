@@ -8,6 +8,7 @@ export default function Button(props) {
       className={props.btnClass} 
       onClick={props.onClick} 
       onSubmit={props.onSubmit}
+      id={props.btnId}
     >
       <span>{props.btnText}</span>
     </button>

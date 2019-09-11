@@ -14,8 +14,8 @@ export default class Note extends Component {
     //   noteDate = note.date_created
     // }
     return (
-      <div className="note-content">
-        <div className="button-container right">
+      <div className="note">
+        <div className="note-buttons">
           <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
           <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
           <Button btnType="button" btnText="Archive" btnClass="note-btn" /*onClick={() => onArchive(note.id)}*//>
