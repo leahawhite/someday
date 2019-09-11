@@ -11,6 +11,7 @@ import {
   faHiking,
   faRoad,
   faSpinner,
+  faStar,
   faUtensils,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons'
@@ -22,6 +23,7 @@ library.add(
   faHiking,
   faRoad,
   faSpinner,
+  faStar,
   faUtensils,
   faVolumeUp
 )

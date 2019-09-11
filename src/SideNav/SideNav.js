@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Folder from '../Folder/Folder';
-import store from '../store';
 import './sidenav.css'
 
-export default class SideNav extends Component {
+class SideNav extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,7 +18,8 @@ export default class SideNav extends Component {
     })
   }
   render() {
-    const folderList = store.folders.map((folder, i) => {
+    const { folders } = this.props
+    const folderList = folders.map((folder, i) => {
       const isSelected = folder === this.state.selected
       return (
         <Folder
@@ -42,3 +43,5 @@ export default class SideNav extends Component {
     )
   }
 }
+
+export default withRouter(SideNav)

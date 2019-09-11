@@ -1,5 +1,5 @@
 .note {
-  padding: 5%;
+  padding: 2.5% 5% 5% 5%;
   border-radius: 10px;
   margin-bottom: 20px;
   line-height: 1.25em;
@@ -26,6 +26,11 @@
   display: inline;
 }
 
+/* .note-favorite {
+  display: inline;
+  justify-content: space-between;
+} */
+
 .note-buttons {
   display: flex;
   justify-content: flex-end;
@@ -34,4 +39,12 @@
 
 .note-buttons button {
   margin-right: 10px;
+}
+
+.fave-star {
+  color: gold;
+}
+
+.hidden {
+  display: none;
 }
