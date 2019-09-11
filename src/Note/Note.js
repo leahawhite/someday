@@ -7,18 +7,18 @@ export default class Note extends Component {
 
   render() {
     const { note, index, onEdit, onDelete, onArchive } = this.props
-    let noteDate 
-    if (note.date_edited) {
-      noteDate = note.date_edited 
-    } else {
-      noteDate = note.date_created
-    }
+    // let noteDate 
+    // if (note.date_edited) {
+    //   noteDate = note.date_edited 
+    // } else {
+    //   noteDate = note.date_created
+    // }
     return (
       <div className="note-content">
         <div className="button-container right">
           <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
           <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
-          <Button btnType="button" btnText="Archive" btnClass="note-btn" onClick={() => onArchive(note.id)}/>
+          <Button btnType="button" btnText="Archive" btnClass="note-btn" /*onClick={() => onArchive(note.id)}*//>
         </div>
         <div>
           <label>What?</label>
@@ -26,7 +26,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Where can I find it?</label>
-          <span>{note.where}</span>
+          <span>{note.how}</span>
         </div>
         <div>
           <label>Who recommended it?</label>
@@ -38,7 +38,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Notes</label>
-          <span>{note.notes}</span>
+          <span>{note.thoughts}</span>
         </div>
         <div>
           <label>Last edited</label>

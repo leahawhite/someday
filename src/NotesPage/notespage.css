@@ -5,9 +5,20 @@
   margin: 40px 0;
 }
 
-.item-list {
+.notelist {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.items {
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
   padding: 0 5%;
   position: relative;
+  width: 100%;
 }
 
 .sort-results-form {
