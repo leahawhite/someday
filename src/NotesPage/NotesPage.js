@@ -6,18 +6,14 @@ import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
-import store from '../store';
 import './notespage.css';
 
 export default class NotesPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
-      notes: [],
-      folders: [],
       sort: 'date',
-      error: null,
+      notes: this.props.notes,
       selectedNote: null,
       editId: null,
       updatedNote: {},
@@ -30,15 +26,7 @@ export default class NotesPage extends Component {
       thoughts: "", 
     }
   }
-  // need to update values and pass them to noteform -- 
-
-  componentDidMount() {
-    this.setState({
-      notes: store.notes,
-      folders: store.folders
-    })
-  }
-
+  
   handleUpdateSort = sort => {
     this.setState({
       sort: sort
@@ -146,8 +134,7 @@ export default class NotesPage extends Component {
   }
 
   renderHeader() {
-    const { notes, folders } = this.state
-    const { selectedFolderId } = this.props
+    const { notes, folders, selectedFolderId } = this.props
     console.log('selectedFolderId', selectedFolderId)
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     console.log('selectedFolder', selectedFolder)
@@ -173,9 +160,8 @@ export default class NotesPage extends Component {
   }
 
   renderNotes() {
-    const { selectedFolderId } = this.props
-    const { notes, loading, editId, folders } = this.state
-    const { folder, what, how, who, link, highlight, thoughts } = this.state
+    const { selectedFolderId, notes, folders, folder, loading } = this.props
+    const { editId, what, how, who, link, highlight, thoughts } = this.state
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
     const noteList = results && results.length ? this.sortResults(results).map((note, index) => {
@@ -235,18 +221,6 @@ export default class NotesPage extends Component {
                 id="highlighted"
                 onClick={() => this.handleUpdateSort("highlighted")} 
               />
-              {/* <label className="sort-results" htmlFor="sort-results">Sort by:</label>
-              <select 
-                className="sort-select" 
-                type="text" 
-                id="sort-results"
-                name="sort"
-                value={this.state.value}
-                onChange={e => this.handleUpdateSort(e)} 
-              >
-                <option name="sort" value="date">Most recent</option>
-                <option name="sort" value="highlighted">Highlighted</option>
-              </select> */}
             </form>
             {noteList}
           </>
@@ -262,7 +236,6 @@ export default class NotesPage extends Component {
           {this.renderHeader()}
         </section>
         <section className="notes-content">
-          <SideNav onFolderSelect={this.props.onFolderSelect}/>
           <div className="notelist">
             <div role="alert">
               {error && <p className="error">{error}</p>}
