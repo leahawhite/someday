@@ -16,9 +16,10 @@ export default class AddNotePage extends Component {
   handleCancel = () => {
     this.props.history.push('/dashboard')
   }
-  
+
   handleSubmit = e => {
     e.preventDefault()
+    const { addNewNote } = this.props
     const { folder, what, how, who, link, highlight, thoughts } = e.target
     const newNote = {
       folder: folder.value,
@@ -29,21 +30,21 @@ export default class AddNotePage extends Component {
       highlight: highlight.value,
       thoughts: thoughts.value
     }
+    console.log('newNote', newNote)
     this.setState({ error: null })
     // post to API
-    // update notes in state (how to do this without notes and methods in Context?)
+    addNewNote(newNote)
     this.props.history.push('/dashboard')
   }
   // do I need a "Are you sure you want to navigate away?" prompt when sidenav is clicked here?
   render () {
-    
     return (
-      <section className="item-list">
+      <section className="add-note">
         <h2>Add New Note</h2>
-        <form className="note-content" onSubmit={e => this.handleSubmit(e)}>
+        <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
           <div>
             <label htmlFor="folder">Category?</label>
-            <select id="folder">
+            <select id="folder" name="folder">
               <option value="1">Watch</option>
               <option value="2">Read</option>
               <option value="3">Listen</option>
@@ -75,9 +76,9 @@ export default class AddNotePage extends Component {
           </div>
           <div>
             <label htmlFor="thoughts">Notes</label>
-            <textarea id="notes" rows="2" name="thoughts" />
+            <textarea id="notes" rows="3" name="thoughts" />
           </div>
-          <div className="button-container">
+          <div className="addnote-buttons">
             <Button btnType="submit" btnText="Save" btnClass="note-btn"/>
             <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => this.handleCancel(e)} />
           </div>

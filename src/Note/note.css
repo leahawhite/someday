@@ -20,16 +20,14 @@
 .note input {
   width: 100%;
   margin-bottom: 10px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .highlight {
   display: inline;
 }
-
-/* .note-favorite {
-  display: inline;
-  justify-content: space-between;
-} */
 
 .note-buttons {
   display: flex;
