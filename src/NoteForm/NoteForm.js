@@ -6,8 +6,8 @@ export default class NoteForm extends Component {
   
   render() {
     const { onSubmit, onCancel } = this.props
-    const { changeFolder, changeWhat, changeWhere, changeWho, changeLink, changeHighlight, changeNotes } = this.props
-    const { folder="", what="", where="", who="", link="", highlight="", noteNotes="" } = this.props
+    const { changeFolder, changeWhat, changeHow, changeWho, changeLink, changeHighlight, changeNotes } = this.props
+    const { folder="", what="", how="", who="", link="", highlight="", thoughts="" } = this.props
     
     return (
       <form className="note-content" onSubmit={(e) => onSubmit(e)}>
@@ -20,6 +20,7 @@ export default class NoteForm extends Component {
             <option value="4">Do</option>
             <option value="5">Eat</option>
             <option value="6">Go</option>
+            <option value="7">Archive</option>
           </select>
         </div>
         <div>
@@ -27,8 +28,8 @@ export default class NoteForm extends Component {
           <input id="what" type="text" name="what" value={what} onChange={changeWhat} />
         </div>
         <div>
-          <label htmlFor="where">Where can I find it?</label>
-          <input id="where" type="text" name="where" value={where} onChange={changeWhere}/>
+          <label htmlFor="how">Where can I find it?</label>
+          <input id="how" type="text" name="how" value={how} onChange={changeHow}/>
         </div>
         <div>
           <label htmlFor="who">Who recommended it?</label>
@@ -43,8 +44,8 @@ export default class NoteForm extends Component {
           <input id="highlight" type="checkbox" name="highlight" value={highlight} onChange={changeHighlight} />
         </div>
         <div>
-          <label htmlFor="noteNotes">Notes</label>
-          <textarea id="notes" rows="2" name="noteNotes" value={noteNotes} onChange={changeNotes} />
+          <label htmlFor="thoughts">Notes</label>
+          <textarea id="notes" rows="2" name="thoughts" value={thoughts} onChange={changeNotes} />
         </div>
         <div className="button-container">
           <Button btnType="submit" btnText="Save" btnClass="note-btn"/>

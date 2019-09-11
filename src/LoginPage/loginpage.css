@@ -1,4 +1,4 @@
-.login-container {
+.login {
   display: flex;
   flex: 1 1;
   flex-direction: column;
@@ -8,6 +8,10 @@
   width: 100%;
   max-width: 450px;
   padding: 1% 5%;
+}
+
+.login h2 {
+  margin-bottom: 20px;
 }
 
 .login-header {

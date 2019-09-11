@@ -1,0 +1,5 @@
+.no-notes {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import SideNav from '../SideNav/SideNav';
 import Spinner from '../Spinner/Spinner';
+import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
 import store from '../store';
@@ -13,32 +14,27 @@ export default class NotesPage extends Component {
     this.state = {
       loading: false,
       notes: [],
+      folders: [],
       sort: 'date',
       error: null,
-      selectedFolderId: null,
       selectedNote: null,
       editId: null,
       updatedNote: {},
       folder: "",  
       what: "",
-      where: "",
+      how: "",
       who: "",
       link: "",
       highlight: "",
-      noteNotes: "", 
+      thoughts: "", 
     }
   }
   // need to update values and pass them to noteform -- 
 
   componentDidMount() {
     this.setState({
-      notes: store.notes
-    })
-  }
-
-  onFolderSelect = folderId => {
-    this.setState({
-      selectedFolderId: folderId
+      notes: store.notes,
+      folders: store.folders
     })
   }
 
@@ -48,22 +44,32 @@ export default class NotesPage extends Component {
     })
   }
 
+  handleNoteSelect = note => {
+    this.setState({
+      selectedNote: note
+    })
+  }
+
   handleNoteSubmit = e => {
     e.preventDefault()
-    const { folder, what, where, who, link, highlight, noteNotes } = this.state
-    console.log('where', where)
-    // validation and fetch patch or post with input values
-    // get note by id and update note with new info
-    // then resetFields
-    // then updateNotes(newNote)
+    const { folder, what, how, who, link, highlight, thoughts, selectedNote } = this.state
     this.setState({
       editId: null
     })
-    const items = new Map([['folder', folder], ['what', what], ['where', where], ['who', who], ['link', link], ['highlight', highlight], ['noteNotes', noteNotes]])
-    const updatedNote = Object.fromEntries(items)
-    this.setState({ updatedNote })
-    console.log('this.state.updatedNote sub', this.state.updatedNote)
-    this.updateNotes(this.state.updatedNote)
+    const updatedNote = {
+      "id": selectedNote.id,
+      "folder": folder,
+      "what": what,
+      "how": how,
+      "who": who,
+      "link": link,
+      "highlight": highlight,
+      "thoughts": thoughts
+    }
+    this.setState(
+      { updatedNote },
+      () => {this.updateNotes(this.state.updatedNote)}
+    )
   }
 
   handleNoteCancel = id => {
@@ -78,11 +84,11 @@ export default class NotesPage extends Component {
       editId: note.id,
       folder: note.folder,  
       what: note.what,
-      where: note.where,
+      how: note.how,
       who: note.who,
       link: note.link,
       highlight: note.highlight,
-      noteNotes: note.noteNotes, 
+      thoughts: note.thoughts, 
     })
   }
 
@@ -92,8 +98,8 @@ export default class NotesPage extends Component {
   handleChangeWhat = e => {
     this.setState({ what: e.target.value })
   }
-  handleChangeWhere = e => {
-    this.setState({ where: e.target.value })
+  handleChangeHow = e => {
+    this.setState({ how: e.target.value })
   }
   handleChangeWho = e => {
     this.setState({ who: e.target.value })
@@ -105,15 +111,15 @@ export default class NotesPage extends Component {
     this.setState({ highlight: e.target.value })
   }
   handleChangeNotes = e => {
-    this.setState({ noteNotes: e.target.value })
+    this.setState({ thoughts: e.target.value })
   }
   updateNotes = updatedNote => {
+    const notes = this.state.notes
+    const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
       notes: this.state.notes.map(nt =>
-        (nt.id !== updatedNote.id) ? nt : updatedNote)
+          (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
     })
-    console.log('updatedNOte', updatedNote)
-    console.log('this.state.notes', this.state.notes)
   }
 
   handleNoteDelete = id => {
@@ -138,48 +144,81 @@ export default class NotesPage extends Component {
     return results
   }
 
+  renderHeader() {
+    const { notes, folders } = this.state
+    const { selectedFolderId } = this.props
+    console.log('selectedFolderId', selectedFolderId)
+    const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
+    console.log('selectedFolder', selectedFolder)
+    if (!notes.length) {
+      return (
+        <div className="notelist-header">
+          <h2>Get started by <Link to="/add-note">creating a new note.</Link></h2> 
+        </div>
+      )
+    } else if (notes && notes.length && !selectedFolderId) {
+      return (
+        <div className="notelist-header">
+          <h2>Choose a folder to see your notes.</h2> 
+        </div>
+      )
+    } else if (selectedFolderId) {
+      return <h2 className="selectedFolder-title">{selectedFolder.text}</h2>
+    }
+  }
+
   renderNotes() {
-    const { notes, loading, selectedFolderId, editId } = this.state
-    const { folder, what, where, who, link, highlight, noteNotes } = this.state
-    const results = notes.filter(note => note.folder === selectedFolderId)
-    console.log('results', results)
-    const noteList = results.length ? this.sortResults(results).map((note, index) => {
+    const { selectedFolderId } = this.props
+    const { notes, loading, editId, folders } = this.state
+    const { folder, what, how, who, link, highlight, thoughts } = this.state
+    const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
+    const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
+    const noteList = results && results.length ? this.sortResults(results).map((note, index) => {
       if (note.id === editId) {
         return <NoteForm 
-                key={index} 
-                note={note}
-                folder={folder}
-                what={what}
-                where={where}
-                who={who}
-                link={link}
-                highlight={highlight}
-                noteNotes={noteNotes}
-                changeFolder={this.handleChangeFolder}
-                changeWhat={this.handleChangeWhat}
-                changeWhere={this.handleChangeWhere}
-                changeWho={this.handleChangeWho}
-                changeLink={this.handleChangeLink}
-                changeHighlight={this.handleChangeHighlight}
-                changeNotes={this.handleChangeNotes}
-                onSubmit={this.handleNoteSubmit} 
-                onCancel={this.handleNoteCancel} 
+                  key={index} 
+                  note={note}
+                  folder={folder}
+                  what={what}
+                  how={how}
+                  who={who}
+                  link={link}
+                  highlight={highlight}
+                  thoughts={thoughts}
+                  changeFolder={this.handleChangeFolder}
+                  changeWhat={this.handleChangeWhat}
+                  changeHow={this.handleChangeHow}
+                  changeWho={this.handleChangeWho}
+                  changeLink={this.handleChangeLink}
+                  changeHighlight={this.handleChangeHighlight}
+                  changeNotes={this.handleChangeNotes}
+                  onSubmit={this.handleNoteSubmit} 
+                  onCancel={this.handleNoteCancel} 
                 />
       } else {
         return <Note 
-                key={index} 
-                index={index} 
-                note={note} 
-                onEdit={this.handleNoteEdit} 
-                onDelete={this.handleNoteDelete}
-                onArchive={this.handleNoteArchive} 
+                  key={index} 
+                  index={index} 
+                  note={note} 
+                  onEdit={this.handleNoteEdit} 
+                  onDelete={this.handleNoteDelete}
+                  onArchive={this.handleNoteArchive} 
                />
       }
     }) : null 
-    
+
+    // MAIN NOTES SECTION:
+    // if loading, show loader centered
+    // if no notes, show Empty Folder component centered
+    // if notes, show notes
+    // at bottom of list of notes, another Add Notes button
+
     if (loading) {
       return <Spinner />
-    } else if (notes.length) {
+    } else if (selectedFolder && !noteList) {
+      return <EmptyFolder selectedFolder={selectedFolder} />
+    }
+      else if (noteList && noteList.length) {
         return (
           <>  
             <form className="sort-results-form">
@@ -199,26 +238,24 @@ export default class NotesPage extends Component {
             {noteList}
           </>
         )
-      } else {
-        // return null? or else this pops on the screen first thing
-          return (
-            <section className="item-list">
-              <p>Navigate the folders to see your items or <Link to="/add-note">Create a New Item.</Link></p> 
-            </section>
-          )
-        }
+      } 
   }
 
   render() {
     const { error } = this.state
     return (
       <div className="row">
-        <SideNav onFolderSelect={this.onFolderSelect}/>
-        <section className="item-list">
-          <div role="alert">
-            {error && <p className="error">{error}</p>}
+        <SideNav onFolderSelect={this.props.onFolderSelect}/>
+        <section className="notelist">
+          <div className="header">
+            {this.renderHeader()}
           </div>
-          {this.renderNotes()}
+          <div className="items">
+            <div role="alert">
+              {error && <p className="error">{error}</p>}
+            </div>
+            {this.renderNotes()}
+          </div>
         </section>
       </div>
     )
