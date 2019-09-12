@@ -8,6 +8,10 @@ import NoteForm from '../NoteForm/NoteForm';
 import './notespage.css';
 
 export default class NotesPage extends Component {
+  static defaultProps = {
+    notes: []
+  }
+  
   constructor(props) {
     super(props)
     this.state = {

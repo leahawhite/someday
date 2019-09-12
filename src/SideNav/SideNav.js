@@ -4,6 +4,10 @@ import Folder from '../Folder/Folder';
 import './sidenav.css'
 
 class SideNav extends Component {
+  static defaultProps = {
+    folders: []
+  }
+
   constructor(props) {
     super(props)
     this.state = {

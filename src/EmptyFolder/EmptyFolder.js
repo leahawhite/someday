@@ -5,6 +5,10 @@ import Button from '../Button/Button';
 import './emptyfolder.css';
 
 export default class EmptyFolder extends Component {
+  static defaultProps = {
+    selectedFolder: {}
+  }
+  
   render() {
     const { selectedFolder } = this.props
     return (
