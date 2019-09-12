@@ -49,7 +49,7 @@ export default class NoteForm extends Component {
         </div>
         <div className="noteform-buttons">
           <Button btnType="submit" btnText="Save" btnClass="note-btn" />
-          <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={() => onCancel} />
+          <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => onCancel(e)} />
         </div>
       </form>
     )

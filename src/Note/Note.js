@@ -5,16 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './note.css';
 
 export default class Note extends Component {
+
+  renderDate = () => {
+    const { note } = this.props
+    let noteDate 
+    if (note.date_edited) {
+      noteDate = note.date_edited 
+    } else {
+      noteDate = note.date_created
+    }
+    return noteDate
+  }
   
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
     const fave = note.favorite ? "fave-star" : "hidden"
-    // let noteDate 
-    // if (note.date_edited) {
-    //   noteDate = note.date_edited 
-    // } else {
-    //   noteDate = note.date_created
-    // }
+    
     return (
       <div className="note">
         <FontAwesomeIcon className={fave} icon="star" size="lg" />
@@ -45,7 +51,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Last edited</label>
-          <Moment format="MM-DD-YYYY">{note.date_edited}</Moment>
+          <Moment format="MM-DD-YYYY">{this.renderDate()}</Moment>
         </div>
       </div>
     )

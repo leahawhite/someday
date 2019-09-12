@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import TopNav from './TopNav/TopNav';
 import SideNav from './SideNav/SideNav';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
@@ -11,7 +11,7 @@ import TokenService from './services/token-service';
 import store from './store';
 import './app.css';
 
-export default class App extends Component {
+class App extends Component {
   state = {
     loggedIn: TokenService.getAuthToken(),
     selectedFolderId: null,
@@ -58,12 +58,6 @@ export default class App extends Component {
     })
   }
 
-  handleNoteSelect = note => {
-    this.setState({
-      selectedNote: note
-    })
-  }
-
   handleNoteSubmit = e => {
     e.preventDefault()
     const { noteFolder, what, how, who, link, highlight, thoughts, selectedNote } = this.state
@@ -93,10 +87,11 @@ export default class App extends Component {
     })
   }
 
+  // basically a page reload, added withRouter to App to do this. necessary?
   handleNoteCancel = id => {
     this.setState({
       editId: null
-    })
+    }, () => this.props.history.push('/dashboard'))
   }
 
   handleNoteEdit = note => {
@@ -144,9 +139,19 @@ export default class App extends Component {
     this.setState({
       ...this.state,
       [e.target.getAttribute('name')]: e.target.value
-    }, () => console.log('changeinputstate', this.state))
-    console.log('event.target', e.target.getAttribute('name'))
+    })
   }
+
+  // handleChangeInput = e => {
+  //   e.preventDefault();
+  //   this.setState({
+  //     ...this.state,
+  //     updatedNote: {
+  //       ...this.state.updatedNote,
+  //       [e.target.getAttribute('name')]: e.target.value
+  //     }
+  //   }, () => console.log(this.state))
+  // }
 
   updateNotes = updatedNote => {
     console.log('updatenotes updated note', updatedNote)
@@ -169,9 +174,7 @@ export default class App extends Component {
       notes,
       folders,
       folder,
-      selectedNote,
       editId,
-      updatedNote,
       noteFolder,  
       what,
       how,
@@ -196,18 +199,16 @@ export default class App extends Component {
               <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} {...props}/>} 
             />
             <Route path={'/signup'} component={SignupPage} />
-            <PrivateRoute path={'/dashboard'} component={props =>
+            <PrivateRoute key="private" path={'/dashboard'} render={props =>
               <NotesPage
+                key="notespage"
                 selectedFolderId={selectedFolderId} 
-                onFolderSelect={this.onFolderSelect}
                 loading={loading}
                 error={error}
                 notes={notes}
                 folders={folders}
                 folder={folder}
-                selectedNote={selectedNote}
                 editId={editId}
-                updatedNote={updatedNote}
                 noteFolder={noteFolder}
                 what={what}
                 how={how}
@@ -215,17 +216,15 @@ export default class App extends Component {
                 link={link}
                 highlight={highlight}
                 thoughts={thoughts}
-                handleNoteSelect={this.handleNoteSelect}
                 handleNoteSubmit={this.handleNoteSubmit}
                 handleNoteCancel={this.handleNoteCancel}
                 handleNoteEdit={this.handleNoteEdit}
                 handleNoteArchive={this.handleNoteArchive}
                 handleChangeInput={this.handleChangeInput}
-                updateNotes={this.updateNotes}
                 handleNoteDelete={this.handleNoteDelete}
                 {...props} />}
             />
-            <PrivateRoute path={'/add-note'} component={props =>
+            <PrivateRoute path={'/add-note'} render={props =>
               <AddNotePage 
                 loading={loading}
                 error={error}
@@ -234,8 +233,9 @@ export default class App extends Component {
             />
           </main>
         </div>
-        
       </div>
     )
   }
 }
+
+export default withRouter(App)
