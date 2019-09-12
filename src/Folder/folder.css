@@ -1,17 +1,28 @@
 .folder {
   display: flex;
-  padding: 5%;
+  padding: 8% 5%;
   font-size: 20px;
   text-align: left;
-  margin-bottom: 5px;
-  border: 1px solid #D3D3D3;
   cursor: pointer;
+  transition: background 250ms ease-in-out,
+    transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
-.folder:hover {
-  background-color: #DCDCDC;
-} 
+.folder span {
+  padding-top: 2.75px;
+}
 
+.folder:hover,
+.folder:focus,
+.folder:active {
+  background: #0053ba;
+}
+
+.folder:active {
+  transform: scale(0.99);
+}
 
 .folder-icon {
   width: 50px;
@@ -22,3 +33,8 @@
   text-align: left;
 }
 
+@media only screen and (max-width: 600px) {
+  .folder {
+    height: 50px;
+  }
+}

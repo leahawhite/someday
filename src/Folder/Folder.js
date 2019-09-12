@@ -9,7 +9,7 @@ export default function Folder(props) {
       <div className="folder-icon">
         <FontAwesomeIcon icon={icon} size="lg" />
       </div>
-        <span className="folder-text">{text}</span>
+      <span className="folder-text">{text}</span>
     </li>
   )
 }
