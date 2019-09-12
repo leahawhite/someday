@@ -36,9 +36,7 @@ export default class NotesPage extends Component {
 
   renderHeader() {
     const { notes, folders, selectedFolderId } = this.props
-    console.log('selectedFolderId', selectedFolderId)
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
-    console.log('selectedFolder', selectedFolder)
     if (!notes.length) {
       return (
         <div className="notelist-header">
@@ -64,7 +62,7 @@ export default class NotesPage extends Component {
     const { selectedFolderId, onFolderSelect, notes, folders, loading } = this.props
     const { editId, noteFolder, what, how, who, link, highlight, thoughts } = this.props
     const { selectedNote, updatedNote, handleUpdateSort, handleNoteSelect, handleNoteSubmit, handleNoteCancel, handleNoteEdit } = this.props
-    const { handleChangeFolder, handleChangeWhat, handleChangeHow, handleChangeWho, handleChangeLink, handleChangeHighlight } = this.props
+    const { handleChangeInput } = this.props
     const { handleChangeNotes, updateNotes, handleNoteDelete, handleNoteArchive } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
@@ -80,13 +78,7 @@ export default class NotesPage extends Component {
                   link={link}
                   highlight={highlight}
                   thoughts={thoughts}
-                  changeFolder={handleChangeFolder}
-                  changeWhat={handleChangeWhat}
-                  changeHow={handleChangeHow}
-                  changeWho={handleChangeWho}
-                  changeLink={handleChangeLink}
-                  changeHighlight={handleChangeHighlight}
-                  changeNotes={handleChangeNotes}
+                  changeInput={handleChangeInput}
                   onSubmit={handleNoteSubmit} 
                   onCancel={handleNoteCancel} 
                 />

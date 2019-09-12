@@ -70,7 +70,21 @@ export default class App extends Component {
     this.setState({
       editId: null
     })
-    this.updateNotes()
+    const updatedNote = {
+      id: selectedNote.id,
+      folder: Number(noteFolder),
+      what,
+      how,
+      who,
+      link,
+      highlight,
+      thoughts,
+    }
+    console.log('updatedNote', updatedNote)
+    this.setState(
+      { updatedNote },
+      () => {this.updateNotes(this.state.updatedNote)}
+    )
   }
 
   addNewNote = newNote => {
@@ -86,8 +100,7 @@ export default class App extends Component {
   }
 
   handleNoteEdit = note => {
-    console.log('handleNoteEdit ran')
-    console.log('note', note)
+    // populating state with orig values of note
     this.setState({
       selectedNote: note,
       editId: note.id,
@@ -126,34 +139,24 @@ export default class App extends Component {
     }) 
   }
 
-  handleChangeFolder = e => {
-    this.setState({ noteFolder: e.target.value })
+  handleChangeInput = e => {
+    e.preventDefault();
+    this.setState({
+      ...this.state,
+      [e.target.getAttribute('name')]: e.target.value
+    }, () => console.log('changeinputstate', this.state))
+    console.log('event.target', e.target.getAttribute('name'))
   }
-  handleChangeWhat = e => {
-    this.setState({ what: e.target.value })
-  }
-  handleChangeHow = e => {
-    this.setState({ how: e.target.value })
-  }
-  handleChangeWho = e => {
-    this.setState({ who: e.target.value })
-  }
-  handleChangeLink = e => {
-    this.setState({ link: e.target.value })
-  }
-  handleChangeHighlight = e => {
-    this.setState({ highlight: e.target.value })
-  }
-  handleChangeNotes = e => {
-    this.setState({ thoughts: e.target.value })
-  }
+
   updateNotes = updatedNote => {
+    console.log('updatenotes updated note', updatedNote)
     const notes = this.state.notes
     const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
       notes: this.state.notes.map(nt =>
           (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
     })
+    console.log('updated notes', notes)
   }
 
   render() {
@@ -217,13 +220,7 @@ export default class App extends Component {
                 handleNoteCancel={this.handleNoteCancel}
                 handleNoteEdit={this.handleNoteEdit}
                 handleNoteArchive={this.handleNoteArchive}
-                handleChangeFolder={this.handleChangeFolder}
-                handleChangeWhat={this.handleChangeWhat}
-                handleChangeHow={this.handleChangeHow}
-                handleChangeWho={this.handleChangeWho}
-                handleChangeLink={this.handleChangeLink}
-                handleChangeHighlight={this.handleChangeHighlight}
-                handleChangeNotes={this.handleChangeNotes}
+                handleChangeInput={this.handleChangeInput}
                 updateNotes={this.updateNotes}
                 handleNoteDelete={this.handleNoteDelete}
                 {...props} />}
