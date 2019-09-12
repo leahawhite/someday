@@ -66,7 +66,7 @@ export default class LoginPage extends Component {
                 autoComplete="off"
               />
             </div>
-            <button type="submit">Log In</button>
+            <button className="login-btn" type="submit">Log In</button>
               <p>Demo email: demo@demo.com</p>
               <p>Demo password: demo123</p>
           </form>
