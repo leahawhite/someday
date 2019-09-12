@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './note.css';
 
 export default class Note extends Component {
+  static defaultProps = {
+    note: {}
+  }
 
   renderDate = () => {
     const { note } = this.props

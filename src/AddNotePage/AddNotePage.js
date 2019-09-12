@@ -7,7 +7,7 @@ export default class AddNotePage extends Component {
   static propTypes = {
     history: PropTypes.shape({
       push: PropTypes.func,
-    }).isRequired,
+    }),
   }
   state = {
     error: null
