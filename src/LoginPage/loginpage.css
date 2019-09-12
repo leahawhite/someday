@@ -47,18 +47,8 @@ input {
   border-radius: 4px;
 }
 
-button {
-  font-size: 18px;
-  display: block;
-  text-align: center;
-  margin: 15px auto 20px;
-  padding: 4px 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  box-shadow: none;
-}
-
 p {
   line-height: 0.75em;
   margin-bottom: 0;
 }
+

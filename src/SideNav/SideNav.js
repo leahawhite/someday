@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import Folder from '../Folder/Folder';
-import store from '../store';
 import './sidenav.css'
 
-export default class SideNav extends Component {
+class SideNav extends Component {
+  static defaultProps = {
+    folders: []
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -17,9 +21,26 @@ export default class SideNav extends Component {
       this.props.onFolderSelect(folder.id)
     })
   }
+
   render() {
-    const folderList = store.folders.map((folder, i) => {
-      const isSelected = folder === this.state.selected
+    const { folders } = this.props
+    const folderList = folders.map((folder, i) => {
+    const isSelected = folder === this.state.selected
+    if (this.props.location.pathname === '/add-note') {
+      return (
+        <Link key={folder.id} to="/dashboard">
+          <Folder
+            key={folder.id}
+            index={i}
+            folder={folder}
+            className={`folder ${isSelected ? 'active' : ''}`}
+            text={folder.text}
+            icon={folder.icon}
+            selectFolder={this.selectFolder}
+          />
+        </Link>
+      )
+    }
       return (
         <Folder
           key={folder.id}
@@ -42,3 +63,5 @@ export default class SideNav extends Component {
     )
   }
 }
+
+export default withRouter(SideNav)

@@ -1,0 +1,21 @@
+.add-note {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.add-note h2 {
+  margin: 10px 0;
+}
+
+.addnote-buttons {
+  text-align: center;
+}
+
+.addnote-buttons button {
+  margin: 10px 0;
+}
+
+.addnote-buttons button:nth-child(1) {
+  margin-right: 10px;
+}
