@@ -50,7 +50,7 @@ export default class NotesPage extends Component {
     } else if (notes && notes.length && !selectedFolderId) {
       return (
         <div className="notelist-header">
-          <h2>Choose a folder to see your notes.</h2> 
+          <h2>Select a folder to see your notes.</h2> 
         </div>
       )
     } else if (selectedFolderId) {

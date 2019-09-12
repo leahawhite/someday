@@ -32,19 +32,23 @@ export default class TopNav extends Component {
     return (
       <nav className="TopNav_not-logged-in" role="navigation">
         <div className="TopNav_not-logged-in links">
-          <Link className="navlink-right" to='/signup'>
+          <NavLink className="navlink-left" to="/login" isActive={this.loginMenu} activeClassName="hidden">
+            LOG IN
+          </NavLink>
+          <NavLink className="navlink-right" to="/signup" isActive={this.loginMenu} activeClassName="hidden">
             SIGN UP
-          </Link>
+          </NavLink>
         </div>
       </nav>
     )
   }
+  
   render() {
     const { loggedIn } = this.props
     return (
       <header className="Topnav" role="banner">
         <h1>
-          <NavLink exact to='/dashboard' activeClassName="hidden">Someday</NavLink>
+          <Link to='/dashboard'>Someday</Link>
         </h1>
         {loggedIn
           ? this.renderLogoutLink()

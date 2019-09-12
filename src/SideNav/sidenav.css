@@ -1,14 +1,13 @@
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
 .folder-list-nav {
   display: block;
+  /* how to get style to extend the length of the content? */
+  height: 100vh;
   text-align: left;
   max-width: 30%;
   width: 250px;
+  padding-top: 50px;
+  background-color: #0069ed;
+  color: #fff;
 }
 
 .active {
@@ -17,11 +16,11 @@ ul {
 
 @media only screen and (max-width: 600px) {
   .folder-list-nav {
-    width: 50px; 
+    max-width: 50px;
   }
 
   .folder span {
-    display: none; 
+    display: none;
   }
 
 }

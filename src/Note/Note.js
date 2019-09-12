@@ -22,15 +22,19 @@ export default class Note extends Component {
   
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
-    const fave = note.favorite ? "fave-star" : "hidden"
+    const fave = note.favorite ? "fave-star" : "empty"
     
     return (
       <div className="note">
-        <FontAwesomeIcon className={fave} icon="star" size="lg" />
-        <div className="note-buttons">
-          <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
-          <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
-          <Button btnType="button" btnText="Archive" btnClass="note-btn" onClick={() => onArchive(note)}/>
+        <div className="fave-container">
+          <div className="star-container">
+            <FontAwesomeIcon className={fave} icon="star" size="lg" />
+          </div>
+          <div className="note-buttons">
+            <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
+            <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
+            <Button btnType="button" btnText="Archive" btnClass="note-btn" onClick={() => onArchive(note)}/>
+          </div>
         </div>
         <div>
           <label>What?</label>
