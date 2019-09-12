@@ -59,17 +59,17 @@ export default class NotesPage extends Component {
   }
 
   renderNotes() {
-    const { selectedFolderId, onFolderSelect, notes, folders, loading } = this.props
+    const { selectedFolderId, notes, folders, loading } = this.props
     const { editId, noteFolder, what, how, who, link, highlight, thoughts } = this.props
-    const { selectedNote, updatedNote, handleUpdateSort, handleNoteSelect, handleNoteSubmit, handleNoteCancel, handleNoteEdit } = this.props
+    const { handleNoteSubmit, handleNoteCancel, handleNoteEdit } = this.props
     const { handleChangeInput } = this.props
-    const { handleChangeNotes, updateNotes, handleNoteDelete, handleNoteArchive } = this.props
+    const { handleNoteDelete, handleNoteArchive } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
-    const noteList = results && results.length ? this.sortResults(results).map((note, index) => {
+    const noteList = results && results.length ? this.sortResults(results).map(note => {
       if (note.id === editId) {
         return <NoteForm 
-                  key={index} 
+                  key={note.id} 
                   note={note}
                   noteFolder={noteFolder}
                   what={what}
@@ -84,8 +84,7 @@ export default class NotesPage extends Component {
                 />
       } else {
         return <Note 
-                  key={index} 
-                  index={index} 
+                  key={note.id} 
                   note={note} 
                   onEdit={handleNoteEdit} 
                   onDelete={handleNoteDelete}
