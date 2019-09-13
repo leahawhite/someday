@@ -18,13 +18,13 @@ export default class NotesPage extends Component {
       sort: ""
     }
   }
-    
+
   sortResults = results => {
     const { sort } = this.state
     if (sort) {
       if (sort === 'date') {
         results = results.sort((a,b) => (a.date_created < b.date_created) ? 1 : ((b.date_created < a.date_created) ? -1 : 0));
-      } else if (sort === 'highlighted') {
+      } else if (sort === 'favorite') {
         // TODO: this boolean sort doesn't work
         results = results.sort((a,b) => b.favorite - a.favorite);
       }
@@ -64,7 +64,7 @@ export default class NotesPage extends Component {
 
   renderNotes() {
     const { selectedFolderId, notes, folders, loading } = this.props
-    const { editId, noteFolder, what, how, who, link, highlight, thoughts } = this.props
+    const { editId, noteFolder, what, how, who, link, favorite, thoughts } = this.props
     const { handleNoteSubmit, handleNoteCancel, handleNoteEdit } = this.props
     const { handleChangeInput } = this.props
     const { handleNoteDelete, handleNoteArchive } = this.props
@@ -80,7 +80,7 @@ export default class NotesPage extends Component {
                   how={how}
                   who={who}
                   link={link}
-                  highlight={highlight}
+                  favorite={favorite}
                   thoughts={thoughts}
                   changeInput={handleChangeInput}
                   onSubmit={handleNoteSubmit} 
@@ -115,10 +115,10 @@ export default class NotesPage extends Component {
               />
               <Button 
                 btnClass="sort-results" 
-                btnText="Highlighted" 
+                btnText="Favorites" 
                 btnType="button" 
-                id="highlighted"
-                onClick={() => this.handleUpdateSort("highlighted")} 
+                id="favorite"
+                onClick={() => this.handleUpdateSort("favorite")} 
               />
             </form>
             {noteList}

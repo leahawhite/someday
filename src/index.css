@@ -189,6 +189,10 @@ span {
   display: none;
 }
 
+.red {
+  color: red;
+}
+
 * {
   box-sizing: border-box;
 }
