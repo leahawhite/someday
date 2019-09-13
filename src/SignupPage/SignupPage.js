@@ -79,7 +79,7 @@ export default class SignupPage extends Component {
                 autoComplete="off" 
               />
             </div>
-          <Button btntype="submit" btnText="Sign Up" />
+          <Button btntype="submit" btnText="Register" />
           </form>
         </div>
       </div>
