@@ -26,7 +26,7 @@ export default class NotesPage extends Component {
         results = results.sort((a,b) => (a.date_created < b.date_created) ? 1 : ((b.date_created < a.date_created) ? -1 : 0));
       } else if (sort === 'highlighted') {
         // TODO: this boolean sort doesn't work
-        results = results.sort((a,b) => (a.highlighted === b.highlighted) ? 0 : a.highlighted ? -1 : 1);
+        results = results.sort((a,b) => b.favorite - a.favorite);
       }
     }
     return results

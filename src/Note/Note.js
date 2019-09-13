@@ -22,7 +22,7 @@ export default class Note extends Component {
   
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
-    const fave = note.favorite ? "fave-star" : "empty"
+    const fave = note.favorite ? "fave" : "not-fave"
     
     return (
       <div className="note">
