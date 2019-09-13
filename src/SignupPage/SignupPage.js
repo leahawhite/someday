@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '../Button/Button';
+import TokenService from '../services/token-service';
+import AuthApiService from '../services/auth-api-service';
 import './signuppage.css'
 
 export default class SignupPage extends Component {
-  static defaultProps = {
-    history: {
-      push: () => {},
-    },
-  }
   state = {
-    newUser: {},
     error: null
-  }
-
-  handleSignUpSuccess = (newUser) => {
-    const { history } = this.props
-    history.push('/login')
   }
 
   handleSubmit = event => {
@@ -26,18 +18,38 @@ export default class SignupPage extends Component {
       email: email.value,
       password: password.value
     }
-    this.setState({ 
-      error: null,
-      newUser: newUser 
-    }, () => {this.handleSignUpSuccess(newUser)})
+    this.setState({ error: null })
+    AuthApiService.signupUser(newUser)
+      .then(user => AuthApiService.loginUser({
+        email: email.value,
+        password: password.value
+      }))
+      .then(res => {
+        name.value = ''
+        email.value = ''
+        password.value = ''
+        TokenService.saveAuthToken(res.authToken)
+        this.props.onLogin()
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
   }
 
   render() {
+    const { toDashboard } = this.props
+    const { error } = this.state
+    if (toDashboard) {
+      return <Redirect to="/dashboard" />
+    }
     return (
       <div className="signup">
         <div className="form-container">
           <form onSubmit={e => this.handleSubmit(e)}>
             <h2>Sign Up</h2>
+            <div role='alert'>
+              {error && <p className='red'>{error}</p>}
+            </div>
             <div className="input-container">
               <label htmlFor="name">Full name -- between 3 and 36 characters</label>
               <input
