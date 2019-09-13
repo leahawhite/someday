@@ -34,6 +34,7 @@ class App extends Component {
   }
 
   handleLogin = () => {
+    console.log('handleLogin')
     this.setState({ 
       loggedIn: true,
       toDashboard: true
@@ -198,7 +199,9 @@ class App extends Component {
             <Route exact path={'/login'} render={props =>
               <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} {...props}/>} 
             />
-            <Route path={'/signup'} component={SignupPage} />
+            <Route path={'/signup'} render={props =>
+              <SignupPage onLogin={this.handleLogin} toDashboard={toDashboard} {...props}/>} 
+            />
             <PrivateRoute key="private" path={'/dashboard'} render={props =>
               <NotesPage
                 key="notespage"

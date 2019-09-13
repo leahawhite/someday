@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import TokenService from '../services/token-service';
+import AuthApiService from '../services/auth-api-service';
 import './loginpage.css'
 
 export default class LoginPage extends Component {
@@ -15,21 +16,29 @@ export default class LoginPage extends Component {
   
   handleSubmit = event => {
     event.preventDefault()
-    const email = event.target.email.value
-    const password = event.target.password.value
-    const token = TokenService.makeBasicAuthToken(email, password)
-    TokenService.saveAuthToken(token)
-    this.props.onLogin()
-    const { history } = this.props
-    history.push('/dashboard')
+    this.setState({ error: null })
+    const { email, password } = event.target
+    AuthApiService.loginUser({
+      email: email.value,
+      password: password.value,
+    })
+      .then(res => {
+        email.value = ''
+        password.value = ''
+        TokenService.saveAuthToken(res.authToken)
+        this.props.onLogin()
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
   }
   
   render() {
-    // const { toDashboard } = this.props
+    const { toDashboard } = this.props
     const { error } = this.state
-    // if (toDashboard) {
-    //   return <Redirect to="/dashboard" />
-    // }
+    if (toDashboard) {
+      return <Redirect to="/dashboard" />
+    }
     return (
       <div className="login">
         <header className="login-header">
