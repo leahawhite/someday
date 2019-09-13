@@ -131,17 +131,13 @@ export default class NotesPage extends Component {
     const { error } = this.props
     return (
       <>
-        <section className="notes-header">
-          {this.renderHeader()}
-        </section>
-        <section className="notes-content">
-          <div className="notelist">
-            <div role="alert">
-              {error && <p className="error">{error}</p>}
-            </div>
-            {this.renderNotes()}
+        {this.renderHeader()}
+        <div className="notelist">
+          <div role="alert">
+            {error && <p className="error">{error}</p>}
           </div>
-        </section>
+          {this.renderNotes()}
+        </div>
       </>
     )
   }
