@@ -79,7 +79,7 @@ class App extends Component {
     })
   }
 
-  handleNoteSubmit = e => {
+  handleNoteSubmit = (e, cb) => {
     e.preventDefault()
     const { noteFolder, what, how, who, link, favorite, thoughts, selectedNote } = this.state
     this.setState({
@@ -95,11 +95,15 @@ class App extends Component {
       favorite,
       thoughts,
     }
-    console.log('updatedNote', updatedNote)
-    this.setState(
-      { updatedNote },
-      () => {this.updateNotes(this.state.updatedNote)}
-    )
+    NotesApiService.updateNote(updatedNote)
+      .then(response => {
+        this.setState(
+          { updatedNote: response },
+          () => {this.updateNotes(this.state.updatedNote)})
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
   }
 
   handleNewNoteSubmit = newNote => {
@@ -140,7 +144,7 @@ class App extends Component {
       link: note.link,
       favorite: note.favorite,
       thoughts: note.thoughts, 
-    }, () => console.log('this.state', this.state))
+    })
   }
 
   handleNoteDelete = (id, cb) => {
@@ -157,7 +161,6 @@ class App extends Component {
   }
 
   removeDeletedNote(id) {
-    console.log('remove deleted note ran')
     const newNotes = this.state.notes.filter(nt =>
       nt.id !== id)
     this.setState({ notes: newNotes })
@@ -199,14 +202,12 @@ class App extends Component {
   // }
 
   updateNotes = updatedNote => {
-    console.log('updatenotes updated note', updatedNote)
     const notes = this.state.notes
     const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
       notes: this.state.notes.map(nt =>
           (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
     })
-    console.log('updated notes', notes)
   }
 
   render() {

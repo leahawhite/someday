@@ -36,6 +36,11 @@ h2 {
   padding: 8px;
 }
 
+.noteform-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .noteform-buttons button {
   margin: 10px 0;
 }

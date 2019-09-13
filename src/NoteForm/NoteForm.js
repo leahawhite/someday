@@ -16,8 +16,8 @@ export default class NoteForm extends Component {
             <option value="1">Watch</option>
             <option value="2">Read</option>
             <option value="3">Listen</option>
-            <option value="4">Do</option>
-            <option value="5">Eat</option>
+            <option value="4">Eat</option>
+            <option value="5">Do</option>
             <option value="6">Go</option>
             <option value="7">Archive</option>
           </select>
