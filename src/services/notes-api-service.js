@@ -30,7 +30,6 @@ const NotesApiService = {
     )
   },
   updateNote(updatedNote) {
-    console.log('updatenote fetch ran')
     return fetch(`${config.API_ENDPOINT}/notes/${updatedNote.id}`, {
       method: 'PATCH',
       headers: {

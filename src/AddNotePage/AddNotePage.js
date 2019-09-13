@@ -29,7 +29,7 @@ export default class AddNotePage extends Component {
     }
     this.props.submitNewNote(newNote)
   }
-  // do I need a "Are you sure you want to navigate away?" prompt when sidenav is clicked here?
+  
   render () {
     const { toDashboard } = this.props
     const { error } = this.props
@@ -47,7 +47,7 @@ export default class AddNotePage extends Component {
         <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
           <div>
             <label htmlFor="folder">Category?</label>
-            <select id="folder" name="folder">
+            <select id="folder" name="folder" required>
               <option value="1">Watch</option>
               <option value="2">Read</option>
               <option value="3">Listen</option>
@@ -59,7 +59,7 @@ export default class AddNotePage extends Component {
           </div>
           <div>
             <label htmlFor="what">What?</label>
-            <input id="what" type="text" name="what" />
+            <input id="what" type="text" name="what" required />
           </div>
           <div>
             <label htmlFor="how">Where can I find it?</label>
