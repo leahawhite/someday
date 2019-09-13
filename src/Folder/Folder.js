@@ -13,3 +13,11 @@ export default function Folder(props) {
     </li>
   )
 }
+
+Folder.defaultProps = {
+  folder: {},
+  icon: '',
+  className: '',
+  text: '',
+  selectFolder: ""
+}
