@@ -7,8 +7,8 @@ import LoginPage from './LoginPage/LoginPage';
 import SignupPage from './SignupPage/SignupPage';
 import AddNotePage from './AddNotePage/AddNotePage';
 import NotesPage from './NotesPage/NotesPage';
+import NotesApiService from './services/notes-api-service';
 import TokenService from './services/token-service';
-import store from './store';
 import './app.css';
 
 class App extends Component {
@@ -17,8 +17,8 @@ class App extends Component {
     selectedFolderId: null,
     toDashboard: false,
     loading: false,
-    notes: store.notes,
-    folders: store.folders,
+    notes: [],
+    folders: [],
     error: null,
     sort: 'date',
     selectedNote: null,
@@ -33,6 +33,34 @@ class App extends Component {
     thoughts: "",
   }
 
+  componentDidMount() {
+    this.setState({
+      loading: true
+    })
+    Promise.all([NotesApiService.getFolders(), NotesApiService.getNotes()])
+      .then(([foldersRes, notesRes]) => {
+        if (!foldersRes.ok) {
+          return foldersRes.json().then(e => Promise.reject(e))
+        }
+        if (!notesRes.ok) {
+          return notesRes.json().then(e => Promise.reject(e))
+        }
+        return Promise.all([foldersRes.json(), notesRes.json()])
+      })
+      .then(([folders, notes]) => {
+        this.setState({
+          folders,
+          notes,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({
+          error: error
+        })
+      })
+  }
+
   handleLogin = () => {
     this.setState({ 
       loggedIn: true,
@@ -45,20 +73,13 @@ class App extends Component {
     this.setState({ loggedIn: false })
   }
 
-  getData = () => {
-    this.setState({
-      notes: store.notes,
-      folders: store.folders
-    })
-  }
-
   onFolderSelect = folderId => {
     this.setState({
       selectedFolderId: folderId
     })
   }
 
-  handleNoteSubmit = e => {
+  handleNoteSubmit = (e, cb) => {
     e.preventDefault()
     const { noteFolder, what, how, who, link, favorite, thoughts, selectedNote } = this.state
     this.setState({
@@ -74,12 +95,29 @@ class App extends Component {
       favorite,
       thoughts,
     }
-    console.log('updatedNote', updatedNote)
-    this.setState(
-      { updatedNote },
-      () => {this.updateNotes(this.state.updatedNote)}
-    )
+    NotesApiService.updateNote(updatedNote)
+      .then(response => {
+        this.setState(
+          { updatedNote: response },
+          () => {this.updateNotes(this.state.updatedNote)})
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
   }
+
+  handleNewNoteSubmit = newNote => {
+    NotesApiService.insertNote(newNote)
+      .then(newNote => {
+        this.addNewNote(newNote)
+      })
+      .then(() => {
+        this.setState({ toDashboard: true })
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
+  } 
 
   addNewNote = newNote => {
     this.setState({
@@ -106,13 +144,23 @@ class App extends Component {
       link: note.link,
       favorite: note.favorite,
       thoughts: note.thoughts, 
-    }, () => console.log('this.state', this.state))
+    })
   }
 
-  handleNoteDelete = id => {
+  handleNoteDelete = (id, cb) => {
     if (!window.confirm('Are you sure?')) {
       return
     }
+    NotesApiService.deleteNote(id)
+      .then(data => {
+        cb(data)
+      }, () => {this.removeDeletedNote(id)})
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
+  }
+
+  removeDeletedNote(id) {
     const newNotes = this.state.notes.filter(nt =>
       nt.id !== id)
     this.setState({ notes: newNotes })
@@ -127,10 +175,15 @@ class App extends Component {
         "id": this.state.selectedNote.id,
         "folder": this.state.noteFolder,
       }
-      this.setState(
-        { updatedNote },
-        () => {this.updateNotes(this.state.updatedNote)}
-      )
+      NotesApiService.updateNote(updatedNote)
+        .then(response => {
+          this.setState(
+            { updatedNote: response },
+            () => {this.updateNotes(this.state.updatedNote)})
+        })
+        .catch(res => {
+          this.setState({ error: res.error })
+        })
     }) 
   }
 
@@ -154,14 +207,12 @@ class App extends Component {
   // }
 
   updateNotes = updatedNote => {
-    console.log('updatenotes updated note', updatedNote)
     const notes = this.state.notes
     const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
       notes: this.state.notes.map(nt =>
           (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
     })
-    console.log('updated notes', notes)
   }
 
   render() {
@@ -189,7 +240,7 @@ class App extends Component {
         <TopNav loggedIn={this.state.loggedIn} onLogout={this.handleLogout} />
         <div className="main-container">
           <Route path={["/dashboard", "/add-note"]} component={props =>
-            <SideNav onFolderSelect={this.onFolderSelect} folders={this.state.folders} {...props}/>} 
+            <SideNav onFolderSelect={this.onFolderSelect} getFolders={this.getFolders} loading={loading} folders={this.state.folders} {...props}/>} 
           />
           <main className="main-content" role="main">
             <Route exact path={'/'} render={props =>
@@ -198,13 +249,16 @@ class App extends Component {
             <Route exact path={'/login'} render={props =>
               <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} {...props}/>} 
             />
-            <Route path={'/signup'} component={SignupPage} />
+            <Route path={'/signup'} render={props =>
+              <SignupPage onLogin={this.handleLogin} toDashboard={toDashboard} {...props}/>} 
+            />
             <PrivateRoute key="private" path={'/dashboard'} render={props =>
               <NotesPage
                 key="notespage"
                 selectedFolderId={selectedFolderId} 
                 loading={loading}
                 error={error}
+                getNotes={this.getNotes}
                 notes={notes}
                 folders={folders}
                 folder={folder}
@@ -228,7 +282,8 @@ class App extends Component {
               <AddNotePage 
                 loading={loading}
                 error={error}
-                addNewNote={this.addNewNote}
+                toDashboard={toDashboard}
+                submitNewNote={this.handleNewNoteSubmit}
                 {...props} />}
             />
           </main>
