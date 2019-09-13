@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
+import classnames from 'classnames';
 import Folder from '../Folder/Folder';
 import './sidenav.css'
 
@@ -15,16 +16,6 @@ class SideNav extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.props.getFolders()
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.folders !== prevProps.folders) {
-  //     this.props.getFolders();
-  //   }
-  // }
-
   selectFolder = folder => {
     this.setState({
       selected: folder
@@ -35,16 +26,18 @@ class SideNav extends Component {
 
   render() {
     const { folders } = this.props
-    const folderList = folders.map((folder, i) => {
+    const folderList = folders.map((folder) => {
     const isSelected = folder === this.state.selected
+    const folderClassName = classnames('folder', {
+      active: isSelected
+    })
     if (this.props.location.pathname === '/add-note') {
       return (
         <Link key={folder.id} to="/dashboard">
           <Folder
             key={folder.id}
-            index={i}
             folder={folder}
-            className={`folder ${isSelected ? 'active' : ''}`}
+            className={folderClassName}
             text={folder.text}
             icon={folder.icon}
             selectFolder={this.selectFolder}
@@ -55,9 +48,8 @@ class SideNav extends Component {
       return (
         <Folder
           key={folder.id}
-          index={i}
           folder={folder}
-          className={`folder ${isSelected ? 'active' : ''}`}
+          className={folderClassName}
           text={folder.text}
           icon={folder.icon}
           selectFolder={this.selectFolder}

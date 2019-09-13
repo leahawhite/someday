@@ -19,10 +19,6 @@ export default class NotesPage extends Component {
     }
   }
 
-  componentDidMount() {
-    // this.props.getNotes()
-  }
-    
   sortResults = results => {
     const { sort } = this.state
     if (sort) {
