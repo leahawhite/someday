@@ -6,7 +6,7 @@ import './emptyfolder.css';
 
 export default class EmptyFolder extends Component {
   static defaultProps = {
-    selectedFolder: {}
+    selectedFolder: { icon: "" },
   }
   
   render() {
