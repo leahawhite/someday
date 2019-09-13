@@ -175,10 +175,15 @@ class App extends Component {
         "id": this.state.selectedNote.id,
         "folder": this.state.noteFolder,
       }
-      this.setState(
-        { updatedNote },
-        () => {this.updateNotes(this.state.updatedNote)}
-      )
+      NotesApiService.updateNote(updatedNote)
+        .then(response => {
+          this.setState(
+            { updatedNote: response },
+            () => {this.updateNotes(this.state.updatedNote)})
+        })
+        .catch(res => {
+          this.setState({ error: res.error })
+        })
     }) 
   }
 
