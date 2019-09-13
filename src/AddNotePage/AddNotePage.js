@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Button from '../Button/Button';
 import './addnotepage.css'
 
@@ -9,9 +10,6 @@ export default class AddNotePage extends Component {
       push: PropTypes.func,
     }),
   }
-  state = {
-    error: null
-  }
   
   handleCancel = () => {
     this.props.history.push('/dashboard')
@@ -19,7 +17,6 @@ export default class AddNotePage extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { addNewNote } = this.props
     const { folder, what, how, who, link, favorite, thoughts } = e.target
     const newNote = {
       folder: folder.value,
@@ -30,18 +27,22 @@ export default class AddNotePage extends Component {
       favorite: favorite.value,
       thoughts: thoughts.value
     }
-    console.log('newNote', newNote)
-    this.setState({ error: null })
-    // post to API
-    addNewNote(newNote)
-    this.props.history.push('/dashboard')
+    this.props.submitNewNote(newNote)
   }
   // do I need a "Are you sure you want to navigate away?" prompt when sidenav is clicked here?
   render () {
+    const { toDashboard } = this.props
+    const { error } = this.props
+    if (toDashboard) {
+      return <Redirect to="/dashboard" />
+    }
     return (
       <section className="add-note">
         <div className="add-note-header">
           <h2>Add New Note</h2>
+        </div>
+        <div role='alert'>
+          {error && <p className='red'>{error}</p>}
         </div>
         <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
           <div>
@@ -50,8 +51,8 @@ export default class AddNotePage extends Component {
               <option value="1">Watch</option>
               <option value="2">Read</option>
               <option value="3">Listen</option>
-              <option value="4">Do</option>
-              <option value="5">Eat</option>
+              <option value="4">Eat</option>
+              <option value="5">Do</option>
               <option value="6">Go</option>
               <option value="7">Archive</option>
             </select>

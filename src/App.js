@@ -7,6 +7,7 @@ import LoginPage from './LoginPage/LoginPage';
 import SignupPage from './SignupPage/SignupPage';
 import AddNotePage from './AddNotePage/AddNotePage';
 import NotesPage from './NotesPage/NotesPage';
+import NotesApiService from './services/notes-api-service';
 import TokenService from './services/token-service';
 import store from './store';
 import './app.css';
@@ -46,12 +47,42 @@ class App extends Component {
     this.setState({ loggedIn: false })
   }
 
-  getData = () => {
-    this.setState({
-      notes: store.notes,
-      folders: store.folders
-    })
-  }
+  // getFolders = () => {
+  //   this.setState({
+  //     loading: true
+  //   })
+  //   NotesApiService.getFolders()
+  //     .then(data => {
+  //       this.setState({
+  //         folders: data,
+  //         loading: false
+  //       })
+  //     })
+  //     .catch(error => {
+  //       this.setState({
+  //         error: error
+  //       })
+  //     })
+  // }
+
+  // getNotes = () => {
+  //   this.setState({
+  //     loading: true
+  //   })
+  //   NotesApiService.getNotes()
+  //     .then(data => {
+  //       this.setState({
+  //         notes: data,
+  //         loading: false
+  //       })
+  //     })
+  //     .catch(error => {
+  //       this.setState({
+  //         error: error
+  //       })
+  //     })
+  // }
+
 
   onFolderSelect = folderId => {
     this.setState({
@@ -81,6 +112,23 @@ class App extends Component {
       () => {this.updateNotes(this.state.updatedNote)}
     )
   }
+
+  handleNewNoteSubmit = newNote => {
+    NotesApiService.insertNote(newNote)
+      .then(newNote => {
+        this.addNewNote(newNote)
+      })
+      .then(() => {
+        this.setState({
+          toDashboard: true
+        })
+      })
+      .catch(res => {
+        this.setState({
+          error: res.error
+        })
+      })
+  } 
 
   addNewNote = newNote => {
     this.setState({
@@ -190,7 +238,7 @@ class App extends Component {
         <TopNav loggedIn={this.state.loggedIn} onLogout={this.handleLogout} />
         <div className="main-container">
           <Route path={["/dashboard", "/add-note"]} component={props =>
-            <SideNav onFolderSelect={this.onFolderSelect} folders={this.state.folders} {...props}/>} 
+            <SideNav onFolderSelect={this.onFolderSelect} getFolders={this.getFolders} loading={loading} folders={this.state.folders} {...props}/>} 
           />
           <main className="main-content" role="main">
             <Route exact path={'/'} render={props =>
@@ -208,6 +256,7 @@ class App extends Component {
                 selectedFolderId={selectedFolderId} 
                 loading={loading}
                 error={error}
+                getNotes={this.getNotes}
                 notes={notes}
                 folders={folders}
                 folder={folder}
@@ -231,7 +280,8 @@ class App extends Component {
               <AddNotePage 
                 loading={loading}
                 error={error}
-                addNewNote={this.addNewNote}
+                toDashboard={toDashboard}
+                submitNewNote={this.handleNewNoteSubmit}
                 {...props} />}
             />
           </main>
