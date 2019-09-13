@@ -9,7 +9,6 @@ import AddNotePage from './AddNotePage/AddNotePage';
 import NotesPage from './NotesPage/NotesPage';
 import NotesApiService from './services/notes-api-service';
 import TokenService from './services/token-service';
-import store from './store';
 import './app.css';
 
 class App extends Component {
@@ -18,8 +17,8 @@ class App extends Component {
     selectedFolderId: null,
     toDashboard: false,
     loading: false,
-    notes: store.notes,
-    folders: store.folders,
+    notes: [],
+    folders: [],
     error: null,
     sort: 'date',
     selectedNote: null,
@@ -34,8 +33,35 @@ class App extends Component {
     thoughts: "",
   }
 
+  componentDidMount() {
+    this.setState({
+      loading: true
+    })
+    Promise.all([NotesApiService.getFolders(), NotesApiService.getNotes()])
+      .then(([foldersRes, notesRes]) => {
+        if (!foldersRes.ok) {
+          return foldersRes.json().then(e => Promise.reject(e))
+        }
+        if (!notesRes.ok) {
+          return notesRes.json().then(e => Promise.reject(e))
+        }
+        return Promise.all([foldersRes.json(), notesRes.json()])
+      })
+      .then(([folders, notes]) => {
+        this.setState({
+          folders,
+          notes,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({
+          error: error
+        })
+      })
+  }
+
   handleLogin = () => {
-    console.log('handleLogin')
     this.setState({ 
       loggedIn: true,
       toDashboard: true
@@ -46,43 +72,6 @@ class App extends Component {
     TokenService.clearAuthToken()
     this.setState({ loggedIn: false })
   }
-
-  // getFolders = () => {
-  //   this.setState({
-  //     loading: true
-  //   })
-  //   NotesApiService.getFolders()
-  //     .then(data => {
-  //       this.setState({
-  //         folders: data,
-  //         loading: false
-  //       })
-  //     })
-  //     .catch(error => {
-  //       this.setState({
-  //         error: error
-  //       })
-  //     })
-  // }
-
-  // getNotes = () => {
-  //   this.setState({
-  //     loading: true
-  //   })
-  //   NotesApiService.getNotes()
-  //     .then(data => {
-  //       this.setState({
-  //         notes: data,
-  //         loading: false
-  //       })
-  //     })
-  //     .catch(error => {
-  //       this.setState({
-  //         error: error
-  //       })
-  //     })
-  // }
-
 
   onFolderSelect = folderId => {
     this.setState({
@@ -119,14 +108,10 @@ class App extends Component {
         this.addNewNote(newNote)
       })
       .then(() => {
-        this.setState({
-          toDashboard: true
-        })
+        this.setState({ toDashboard: true })
       })
       .catch(res => {
-        this.setState({
-          error: res.error
-        })
+        this.setState({ error: res.error })
       })
   } 
 
@@ -158,10 +143,21 @@ class App extends Component {
     }, () => console.log('this.state', this.state))
   }
 
-  handleNoteDelete = id => {
+  handleNoteDelete = (id, cb) => {
     if (!window.confirm('Are you sure?')) {
       return
     }
+    NotesApiService.deleteNote(id)
+      .then(data => {
+        cb(data)
+      }, () => {this.removeDeletedNote(id)})
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
+  }
+
+  removeDeletedNote(id) {
+    console.log('remove deleted note ran')
     const newNotes = this.state.notes.filter(nt =>
       nt.id !== id)
     this.setState({ notes: newNotes })
