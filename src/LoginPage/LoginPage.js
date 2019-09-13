@@ -38,7 +38,7 @@ export default class LoginPage extends Component {
         </header>
         <div className="form-container">
           <form className="login-form" onSubmit={this.handleSubmit}>
-            <h2>Log In</h2>
+            <h2>User Login</h2>
             <div role='alert'>
               {error && <p className='red'>{error}</p>}
             </div>

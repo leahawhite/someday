@@ -19,7 +19,7 @@ export default class Note extends Component {
     }
     return noteDate
   }
-  
+
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
     const fave = note.favorite ? "fave" : "not-fave"
@@ -45,7 +45,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Link</label>
-          <a href={note.link} rel="noopener noreferrer" target="_blank">{note.link}</a>
+          <a href={note.link} rel="noopener noreferrer" target="_blank">{note.link.slice(0,25) + ' ...'}</a>
         </div>
         <div>
           <label>Notes</label>
