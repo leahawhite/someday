@@ -39,7 +39,7 @@
 
 .note-buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
@@ -47,6 +47,23 @@
   margin-right: 10px;
 }
 
-.fave-star {
+.fave {
   color: gold;
 }
+
+.not-fave {
+  display: none;
+}
+
+@media only screen and (min-width: 510px) {
+  .note-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .note-buttons button {
+    margin-right: 10px;
+  }
+}
+

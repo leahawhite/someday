@@ -20,10 +20,6 @@
   background: #0053ba;
 }
 
-.folder:active {
-  transform: scale(0.99);
-}
-
 .folder-icon {
   width: 50px;
   margin: 0 10px;

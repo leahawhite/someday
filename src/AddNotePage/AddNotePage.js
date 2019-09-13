@@ -40,7 +40,9 @@ export default class AddNotePage extends Component {
   render () {
     return (
       <section className="add-note">
-        <h2>Add New Note</h2>
+        <div className="add-note-header">
+          <h2>Add New Note</h2>
+        </div>
         <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
           <div>
             <label htmlFor="folder">Category?</label>

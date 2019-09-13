@@ -8,11 +8,11 @@ export default class TopNav extends Component {
     const { onLogout } = this.props
     return (
       <nav className="TopNav_logged-in" role="navigation">
-        <Link
+        {/* <Link
           className="topnavlink left" 
           to='/dashboard'>
           DASHBOARD
-        </Link>
+        </Link> */}
         <Link
           className="topnavlink" 
           to='/add-note'>
@@ -47,6 +47,7 @@ export default class TopNav extends Component {
     const { loggedIn } = this.props
     return (
       <header className="Topnav" role="banner">
+        {/* don't want it to appear on '/', '/login' or '/signup' */}
         <h1>
           <Link to='/dashboard'>Someday</Link>
         </h1>
