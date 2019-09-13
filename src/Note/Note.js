@@ -26,15 +26,10 @@ export default class Note extends Component {
     
     return (
       <div className="note">
-        <div className="fave-container">
-          <div className="star-container">
-            <FontAwesomeIcon className={fave} icon="star" size="lg" />
-          </div>
-          <div className="note-buttons">
-            <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
-            <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
-            <Button btnType="button" btnText="Archive" btnClass="note-btn" onClick={() => onArchive(note)}/>
-          </div>
+        <div className="note-buttons">
+          <Button btnType="button" btnText="Edit" btnClass="note-btn" onClick={() => onEdit(note)}/>
+          <Button btnType="button" btnText="Delete" btnClass="note-btn" onClick={() => onDelete(note.id)}/>
+          <Button btnType="button" btnText="Archive" btnClass="note-btn" onClick={() => onArchive(note)}/>
         </div>
         <div>
           <label>What?</label>
@@ -56,9 +51,14 @@ export default class Note extends Component {
           <label>Notes</label>
           <span>{note.thoughts}</span>
         </div>
-        <div>
-          <label>Last edited</label>
-          <Moment format="MM-DD-YYYY">{this.renderDate()}</Moment>
+        <div className="fave-container">
+          <div>
+            <label>Last edited</label>
+            <Moment format="MM-DD-YYYY">{this.renderDate()}</Moment>
+          </div>
+          <div className="star-container">
+            <FontAwesomeIcon className={fave} icon="star" size="lg" />
+          </div>
         </div>
       </div>
     )
