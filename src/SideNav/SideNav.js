@@ -14,6 +14,17 @@ class SideNav extends Component {
       selected: null
     }
   }
+
+  // componentDidMount() {
+  //   this.props.getFolders()
+  // }
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.folders !== prevProps.folders) {
+  //     this.props.getFolders();
+  //   }
+  // }
+
   selectFolder = folder => {
     this.setState({
       selected: folder
