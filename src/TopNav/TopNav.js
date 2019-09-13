@@ -32,9 +32,9 @@ export default class TopNav extends Component {
     return (
       <nav className="TopNav_not-logged-in" role="navigation">
         <div className="TopNav_not-logged-in links">
-          <NavLink className="navlink-left" to="/login" isActive={this.loginMenu} activeClassName="hidden">
+          {/* <NavLink className="navlink-left" to="/login" isActive={this.loginMenu} activeClassName="hidden">
             LOG IN
-          </NavLink>
+          </NavLink> */}
           <NavLink className="navlink-right" to="/signup" isActive={this.loginMenu} activeClassName="hidden">
             SIGN UP
           </NavLink>

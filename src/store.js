@@ -142,7 +142,7 @@ export default {
         how: "library",
         who: "me",
         link: "https://www.amazon.com/Call-Them-Their-True-Names/dp/1608469468",
-        thoughts: "The one I didn''t have time to finish from the library",
+        thoughts: `The one I didn't have time to finish from the library`,
         favorite: false,
         author: 1,
         date_created: new Date("9-12-2019").toISOString(),

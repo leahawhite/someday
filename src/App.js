@@ -29,7 +29,7 @@ class App extends Component {
     how: "",
     who: "",
     link: "",
-    highlight: "",
+    favorite: "",
     thoughts: "",
   }
 
@@ -60,7 +60,7 @@ class App extends Component {
 
   handleNoteSubmit = e => {
     e.preventDefault()
-    const { noteFolder, what, how, who, link, highlight, thoughts, selectedNote } = this.state
+    const { noteFolder, what, how, who, link, favorite, thoughts, selectedNote } = this.state
     this.setState({
       editId: null
     })
@@ -71,7 +71,7 @@ class App extends Component {
       how,
       who,
       link,
-      highlight,
+      favorite,
       thoughts,
     }
     console.log('updatedNote', updatedNote)
@@ -104,7 +104,7 @@ class App extends Component {
       how: note.how,
       who: note.who,
       link: note.link,
-      highlight: note.highlight,
+      favorite: note.favorite,
       thoughts: note.thoughts, 
     }, () => console.log('this.state', this.state))
   }
@@ -180,7 +180,7 @@ class App extends Component {
       how,
       who,
       link,
-      highlight,
+      favorite,
       thoughts
     } = this.state
     
@@ -214,7 +214,7 @@ class App extends Component {
                 how={how}
                 who={who}
                 link={link}
-                highlight={highlight}
+                favorite={favorite}
                 thoughts={thoughts}
                 handleNoteSubmit={this.handleNoteSubmit}
                 handleNoteCancel={this.handleNoteCancel}

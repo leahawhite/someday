@@ -20,14 +20,14 @@ export default class AddNotePage extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const { addNewNote } = this.props
-    const { folder, what, how, who, link, highlight, thoughts } = e.target
+    const { folder, what, how, who, link, favorite, thoughts } = e.target
     const newNote = {
       folder: folder.value,
       what: what.value,
       how: how.value,
       who: who.value,
       link: link.value,
-      highlight: highlight.value,
+      favorite: favorite.value,
       thoughts: thoughts.value
     }
     console.log('newNote', newNote)
@@ -73,8 +73,8 @@ export default class AddNotePage extends Component {
             <input id="link" type="text" name="link" />
           </div>
           <div>
-            <label htmlFor="highlight">Highlight?</label>
-            <input id="highlight" type="checkbox" name="highlight" />
+            <label htmlFor="favorite">Favorite?</label>
+            <input id="favorite" type="checkbox" name="favorite" />
           </div>
           <div>
             <label htmlFor="thoughts">Notes</label>

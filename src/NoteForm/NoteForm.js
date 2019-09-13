@@ -6,7 +6,7 @@ export default class NoteForm extends Component {
   
   render() {
     const { onSubmit, onCancel, changeInput } = this.props
-    const { noteFolder="", what="", how="", who="", link="", highlight="", thoughts="" } = this.props
+    const { noteFolder="", what="", how="", who="", link="", favorite="", thoughts="" } = this.props
     
     return (
       <form className="note edit" onSubmit={(e) => onSubmit(e)}>
@@ -39,8 +39,8 @@ export default class NoteForm extends Component {
           <input id="link" type="text" name="link" value={link} onChange={e => changeInput(e)} />
         </div>
         <div>
-          <label className="highlight" htmlFor="highlight">Highlight?
-            <input id="highlight" type="checkbox" name="highlight" value={highlight} onChange={e => changeInput(e)} />
+          <label className="favorite" htmlFor="favorite">Favorite?
+            <input id="favorite" type="checkbox" name="favorite" value={favorite} onChange={e => changeInput(e)} />
           </label>
         </div>
         <div>
