@@ -33,7 +33,7 @@ class App extends Component {
     thoughts: "",
   }
 
-  componentDidMount() {
+  getFoldersNotes = () => {
     this.setState({
       loading: true
     })
@@ -61,11 +61,13 @@ class App extends Component {
       })
   }
 
-  handleLogin = () => {
-    this.setState({ 
-      loggedIn: true,
-      // toDashboard: true
-    }, () => this.props.history.push('/dashboard'))
+  handleLogin = async () => {
+    await this.setState({ 
+    loggedIn: true,
+    // toDashboard: true
+    })
+    await this.getFoldersNotes()
+    await this.props.history.push('dashboard')
   }
 
   handleLogout = () => {
