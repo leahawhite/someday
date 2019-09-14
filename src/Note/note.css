@@ -9,7 +9,7 @@
 }
 
 .note a {
-  word-wrap: break-word;
+  word-wrap: break-all;
 }
 
 .note:hover {

@@ -8,16 +8,23 @@ export default class Note extends Component {
   static defaultProps = {
     note: {}
   }
+  // is more useful as date created
+  // renderDate = () => {
+  //   const { note } = this.props
+  //   let noteDate 
+  //   if (note.date_edited) {
+  //     noteDate = note.date_edited 
+  //   } else {
+  //     noteDate = note.date_created
+  //   }
+  //   return noteDate
+  // }
 
-  renderDate = () => {
-    const { note } = this.props
-    let noteDate 
-    if (note.date_edited) {
-      noteDate = note.date_edited 
-    } else {
-      noteDate = note.date_created
+  renderLink = (link) => {
+    if (link && link.length > 25) {
+      return link.slice(0,25) + ' ...'
     }
-    return noteDate
+    return link
   }
 
   render() {
@@ -45,7 +52,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Link</label>
-          <a href={note.link} rel="noopener noreferrer" target="_blank">{note.link.slice(0,25) + ' ...'}</a>
+    <a href={note.link} rel="noopener noreferrer" target="_blank">{this.renderLink(note.link)}</a>
         </div>
         <div>
           <label>Notes</label>
@@ -54,7 +61,7 @@ export default class Note extends Component {
         <div className="fave-container">
           <div>
             <label>Last edited</label>
-            <Moment format="MM-DD-YYYY">{this.renderDate()}</Moment>
+            <Moment format="MM-DD-YYYY">{note.date_created}</Moment>
           </div>
           <div className="star-container">
             <FontAwesomeIcon className={fave} icon="star" size="lg" />
