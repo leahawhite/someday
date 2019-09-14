@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
@@ -7,7 +7,7 @@ import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
 import './notespage.css';
 
-export default class NotesPage extends Component {
+class NotesPage extends Component {
   static defaultProps = {
     notes: []
   }
@@ -142,3 +142,5 @@ export default class NotesPage extends Component {
     )
   }
 }
+
+export default withRouter(NotesPage)

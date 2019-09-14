@@ -6,9 +6,7 @@
   align-content: center;
   justify-content: center;
   margin: 0 auto;
-  width: 100%;
   max-width: 450px;
-  padding: 1% 5%;
 }
 
 .login h2,
@@ -27,6 +25,11 @@
   font-weight: 800px;
 }
 
+.login-header a {
+  color: rgb(0, 0, 0);
+  font-weight: 800;
+}
+
 .login-header p {
   font-size: 18px;
 }
@@ -34,17 +37,19 @@
 .form-container {
   display: block;
   text-align: left;
-  border: 1px solid #aaa;
+  border: 1px solid #0069ed;
   border-radius: 8px;
   padding: 5%;
+  background-color: #0069ed;
+  color: #fff;
 }
 
 input {
   display: block;
-  width: 95%;
+  width: 100%;
   margin: 3px 0 10px 0;
   padding: 8px;
-  border: 1px solid #aaa;
+  border: 1px solid #0069ed;
   border-radius: 4px;
 }
 
@@ -54,4 +59,17 @@ input {
   text-align: center;
   margin: 20px auto;
   border-radius: 8px;
+  background-color: #fff;
+  color: #0053ba;
 }
+
+button:hover,
+button:focus {
+  color: #fff;
+}
+
+@media only screen and (min-width: 768px) {
+  .login, .signup {
+    width: 450px;
+  }
+} 

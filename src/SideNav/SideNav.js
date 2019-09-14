@@ -58,11 +58,14 @@ class SideNav extends Component {
     })
 
     return (
+      <>
+      {/* <div className="folder-list-nav-back"></div> */}
       <nav className="folder-list-nav">
         <ul className="folder-list">
           {folderList}
         </ul>
       </nav>
+      </>
     )
   }
 }

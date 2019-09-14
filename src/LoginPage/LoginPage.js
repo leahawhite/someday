@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, /*Redirect*/ } from 'react-router-dom';
 import TokenService from '../services/token-service';
 import AuthApiService from '../services/auth-api-service';
 import './loginpage.css'
@@ -34,11 +34,11 @@ export default class LoginPage extends Component {
   }
   
   render() {
-    const { toDashboard } = this.props
+    // const { toDashboard } = this.props
     const { error } = this.state
-    if (toDashboard) {
-      return <Redirect to="/dashboard" />
-    }
+    // if (toDashboard) {
+    //   return <Redirect to="/dashboard" />
+    // }
     return (
       <div className="login">
         <header className="login-header">
