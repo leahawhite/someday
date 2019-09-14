@@ -31,9 +31,9 @@ class AddNotePage extends Component {
   }
   
   render () {
-    const { toDashboard } = this.props
+    const { redirect } = this.props
     const { error } = this.props
-    if (toDashboard) {
+    if (redirect) {
       return <Redirect to="/dashboard" />
     }
     return (
@@ -42,7 +42,7 @@ class AddNotePage extends Component {
           <h2>Add New Note</h2>
         </div>
         <div role='alert'>
-          {error && <p className='red'>{error}</p>}
+          {error && <p className='error'>{error}</p>}
         </div>
         <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
             <label htmlFor="folder">Category?</label>

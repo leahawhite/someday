@@ -37,9 +37,9 @@ export default class SignupPage extends Component {
   }
 
   render() {
-    const { toDashboard } = this.props
+    const { redirect } = this.props
     const { error } = this.state
-    if (toDashboard) {
+    if (redirect) {
       return <Redirect to="/dashboard" />
     }
     return (
@@ -48,7 +48,7 @@ export default class SignupPage extends Component {
           <form onSubmit={e => this.handleSubmit(e)}>
             <h2>Sign Up</h2>
             <div role='alert'>
-              {error && <p className='red'>{error}</p>}
+              {error && <p className='error'>{error}</p>}
             </div>
             <div className="input-container">
               <label htmlFor="name">Full name -- between 3 and 36 characters</label>

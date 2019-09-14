@@ -25,7 +25,6 @@ class NotesPage extends Component {
       if (sort === 'date') {
         results = results.sort((a,b) => (a.date_created < b.date_created) ? 1 : ((b.date_created < a.date_created) ? -1 : 0));
       } else if (sort === 'favorite') {
-        // TODO: this boolean sort doesn't work
         results = results.sort((a,b) => b.favorite - a.favorite);
       }
     }

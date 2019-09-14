@@ -15,7 +15,7 @@ class App extends Component {
   state = {
     loggedIn: TokenService.getAuthToken(),
     selectedFolderId: null,
-    toDashboard: false,
+    redirect: false,
     loading: false,
     notes: [],
     folders: [],
@@ -33,39 +33,8 @@ class App extends Component {
     thoughts: "",
   }
 
-  getFoldersNotes = () => {
-    this.setState({
-      loading: true
-    })
-    Promise.all([NotesApiService.getFolders(), NotesApiService.getNotes()])
-      .then(([foldersRes, notesRes]) => {
-        if (!foldersRes.ok) {
-          return foldersRes.json().then(e => Promise.reject(e))
-        }
-        if (!notesRes.ok) {
-          return notesRes.json().then(e => Promise.reject(e))
-        }
-        return Promise.all([foldersRes.json(), notesRes.json()])
-      })
-      .then(([folders, notes]) => {
-        this.setState({
-          folders,
-          notes,
-          loading: false
-        })
-      })
-      .catch(error => {
-        this.setState({
-          error: error
-        })
-      })
-  }
-
   handleLogin = async () => {
-    await this.setState({ 
-    loggedIn: true,
-    // toDashboard: true
-    })
+    await this.setState({ loggedIn: true })
     await this.getFoldersNotes()
     await this.props.history.push('dashboard')
   }
@@ -75,13 +44,90 @@ class App extends Component {
     this.setState({ loggedIn: false })
   }
 
+  getFoldersNotes = () => {
+    this.setState({ loading: true })
+    Promise.all([ NotesApiService.getFolders(), NotesApiService.getNotes() ])
+      .then(([ foldersRes, notesRes ]) => {
+        if ( !foldersRes.ok ) {
+          return foldersRes.json().then(e => Promise.reject(e))
+        }
+        if ( !notesRes.ok ) {
+          return notesRes.json().then(e => Promise.reject(e))
+        }
+        return Promise.all([ foldersRes.json(), notesRes.json() ])
+      })
+      .then(([ folders, notes ]) => {
+        this.setState({
+          folders,
+          notes,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({ error: error })
+      })
+  }
+
   onFolderSelect = folderId => {
     this.setState({
       selectedFolderId: folderId
     })
   }
 
-  handleNoteSubmit = (e, cb) => {
+  handleNewNoteSubmit = newNote => {
+    NotesApiService.insertNote(newNote)
+      .then(newNote => {
+        this.addNewNote(newNote)
+      })
+      .then(() => {
+        this.setState({ redirect: true })
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
+  } 
+
+  addNewNote = newNote => {
+    this.setState({
+      notes: [ ...this.state.notes, newNote ]
+    })
+  }
+
+  handleChangeInput = e => {
+    e.preventDefault();
+    this.setState({
+      ...this.state,
+      [e.target.getAttribute('name')]: e.target.value
+    })
+  }
+
+  // handleChangeInput = e => {
+  //   e.preventDefault();
+  //   this.setState({
+  //     ...this.state,
+  //     updatedNote: {
+  //       ...this.state.updatedNote,
+  //       [e.target.getAttribute('name')]: e.target.value
+  //     }
+  //   }, () => console.log(this.state))
+  // }
+
+  handleNoteEdit = note => {
+    // populating state with orig values of note
+    this.setState({
+      selectedNote: note,
+      editId: note.id,
+      noteFolder: note.folder,  
+      what: note.what,
+      how: note.how,
+      who: note.who,
+      link: note.link,
+      favorite: note.favorite,
+      thoughts: note.thoughts, 
+    }, () => console.log('this.state', this.state))
+  }
+
+  handleUpdatedNoteSubmit = (e, cb) => {
     e.preventDefault()
     const { noteFolder, what, how, who, link, favorite, thoughts, selectedNote } = this.state
     this.setState({
@@ -108,47 +154,19 @@ class App extends Component {
       })
   }
 
-  handleNewNoteSubmit = newNote => {
-    NotesApiService.insertNote(newNote)
-      .then(newNote => {
-        this.addNewNote(newNote)
-      })
-      .then(() => {
-        this.setState({ toDashboard: true })
-      })
-      .catch(res => {
-        this.setState({ error: res.error })
-      })
-  } 
-
-  addNewNote = newNote => {
+  updateNotes = updatedNote => {
+    const notes = this.state.notes
+    const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
-      notes: [ ...this.state.notes, newNote ]
-    })
+      notes: this.state.notes.map(nt =>
+          (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
+    }, () => console.log('updatedFullNote', updatedFullNote))
   }
 
-  // basically a page reload, added withRouter to App to do this. necessary?
-  handleNoteCancel = id => {
-    this.setState({
-      editId: null
-    }, () => this.props.history.push('/dashboard'))
+  handleNoteEditCancel = id => {
+    this.setState({ editId: null })
   }
-
-  handleNoteEdit = note => {
-    // populating state with orig values of note
-    this.setState({
-      selectedNote: note,
-      editId: note.id,
-      noteFolder: note.folder,  
-      what: note.what,
-      how: note.how,
-      who: note.who,
-      link: note.link,
-      favorite: note.favorite,
-      thoughts: note.thoughts, 
-    }, () => console.log('this.state', this.state))
-  }
-
+  
   handleNoteDelete = (id, cb) => {
     if (!window.confirm('Are you sure?')) {
       return
@@ -188,40 +206,12 @@ class App extends Component {
         })
     }) 
   }
-
-  handleChangeInput = e => {
-    e.preventDefault();
-    this.setState({
-      ...this.state,
-      [e.target.getAttribute('name')]: e.target.value
-    })
-  }
-
-  // handleChangeInput = e => {
-  //   e.preventDefault();
-  //   this.setState({
-  //     ...this.state,
-  //     updatedNote: {
-  //       ...this.state.updatedNote,
-  //       [e.target.getAttribute('name')]: e.target.value
-  //     }
-  //   }, () => console.log(this.state))
-  // }
-
-  updateNotes = updatedNote => {
-    const notes = this.state.notes
-    const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
-    this.setState({
-      notes: this.state.notes.map(nt =>
-          (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
-    }, () => console.log('updatedFullNote', updatedFullNote))
-  }
-
+  
   render() {
     const {
       loggedIn, 
       selectedFolderId, 
-      toDashboard,
+      redirect,
       loading,
       error,
       notes,
@@ -246,13 +236,13 @@ class App extends Component {
           />
           <main className="main-content" role="main">
             <Route exact path={'/'} render={props =>
-              <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} toDashboard={toDashboard} {...props}/>} 
+              <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} redirect={redirect} {...props}/>} 
             />
             <Route exact path={'/login'} render={props =>
               <LoginPage loggedIn={loggedIn} onLogin={this.handleLogin} {...props}/>} 
             />
             <Route path={'/signup'} render={props =>
-              <SignupPage onLogin={this.handleLogin} toDashboard={toDashboard} {...props}/>} 
+              <SignupPage onLogin={this.handleLogin} redirect={redirect} {...props}/>} 
             />
             <PrivateRoute key="private" path={'/dashboard'} render={props =>
               <NotesPage
@@ -272,8 +262,8 @@ class App extends Component {
                 link={link}
                 favorite={favorite}
                 thoughts={thoughts}
-                handleNoteSubmit={this.handleNoteSubmit}
-                handleNoteCancel={this.handleNoteCancel}
+                handleNoteSubmit={this.handleUpdatedNoteSubmit}
+                handleNoteCancel={this.handleNoteEditCancel}
                 handleNoteEdit={this.handleNoteEdit}
                 handleNoteArchive={this.handleNoteArchive}
                 handleChangeInput={this.handleChangeInput}
@@ -284,7 +274,7 @@ class App extends Component {
               <AddNotePage 
                 loading={loading}
                 error={error}
-                toDashboard={toDashboard}
+                redirect={redirect}
                 submitNewNote={this.handleNewNoteSubmit}
                 {...props} />}
             />
