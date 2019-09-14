@@ -35,7 +35,7 @@ export default class NoteForm extends Component {
             type="checkbox" 
             name="favorite" 
             value={favorite}
-            checked="favorite"
+            // checked="favorite"
             onChange={e => changeInput(e)} 
             />
           <span className="slider round"></span>

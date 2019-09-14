@@ -7,12 +7,22 @@ const NotesApiService = {
     headers: {
       'authorization': `bearer ${TokenService.getAuthToken()}`,
     }})
+    .then(res =>
+      (!res.ok)
+        ? res.json().then(e => Promise.reject(e))
+        : res.json()
+    )
   },
   getNotes() {
     return fetch(`${config.API_ENDPOINT}/notes`, {
     headers: {
       'authorization': `bearer ${TokenService.getAuthToken()}`,
     }})
+    .then(res =>
+      (!res.ok)
+        ? res.json().then(e => Promise.reject(e))
+        : res.json()
+    )
   },
   insertNote(newNote) {
     return fetch(`${config.API_ENDPOINT}/notes`, {
