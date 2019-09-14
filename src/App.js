@@ -33,10 +33,17 @@ class App extends Component {
     thoughts: "",
   }
 
-  handleLogin = async () => {
-    await this.setState({ loggedIn: true })
-    await this.getFoldersNotes()
-    await this.props.history.push('dashboard')
+  componentDidMount() {
+    this.getFolders()
+    if (this.state.loggedIn) {
+      this.getNotes()
+    }
+  }
+
+  handleLogin = () => {
+    this.setState({ loggedIn: true })
+    this.getNotes()
+    this.props.history.push('dashboard')
   }
 
   handleLogout = () => {
@@ -44,21 +51,25 @@ class App extends Component {
     this.setState({ loggedIn: false })
   }
 
-  getFoldersNotes = () => {
+  getFolders = () => {
     this.setState({ loading: true })
-    Promise.all([ NotesApiService.getFolders(), NotesApiService.getNotes() ])
-      .then(([ foldersRes, notesRes ]) => {
-        if ( !foldersRes.ok ) {
-          return foldersRes.json().then(e => Promise.reject(e))
-        }
-        if ( !notesRes.ok ) {
-          return notesRes.json().then(e => Promise.reject(e))
-        }
-        return Promise.all([ foldersRes.json(), notesRes.json() ])
-      })
-      .then(([ folders, notes ]) => {
+    NotesApiService.getFolders()
+      .then(folders => {
         this.setState({
           folders,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({ error: error })
+      })
+  }
+  
+  getNotes = () => {
+    this.setState({ loading: true })
+    NotesApiService.getNotes()
+      .then(notes => {
+        this.setState({
           notes,
           loading: false
         })

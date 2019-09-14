@@ -5,6 +5,7 @@ import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
+import NotesApiService from '../services/notes-api-service';
 import './notespage.css';
 
 class NotesPage extends Component {
@@ -15,8 +16,22 @@ class NotesPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      sort: ""
+      sort: "",
     }
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true })
+    NotesApiService.getNotes()
+      .then(notes => {
+        this.setState({
+          notes,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({ error: error })
+      })
   }
 
   sortResults = results => {
@@ -32,9 +47,7 @@ class NotesPage extends Component {
   }
 
   handleUpdateSort = sort => {
-    this.setState({
-      sort: sort
-    }, () => console.log(this.state.sort))
+    this.setState({ sort })
   }
 
   renderHeader() {
