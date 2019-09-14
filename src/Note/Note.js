@@ -52,7 +52,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Link</label>
-    <a href={note.link} rel="noopener noreferrer" target="_blank">{this.renderLink(note.link)}</a>
+          <a href={note.link} rel="noopener noreferrer" target="_blank">{this.renderLink(note.link)}</a>
         </div>
         <div>
           <label>Notes</label>
@@ -60,7 +60,7 @@ export default class Note extends Component {
         </div>
         <div className="fave-container">
           <div>
-            <label>Last edited</label>
+            <label>Date added</label>
             <Moment format="MM-DD-YYYY">{note.date_created}</Moment>
           </div>
           <div className="star-container">

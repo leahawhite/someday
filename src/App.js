@@ -42,7 +42,6 @@ class App extends Component {
 
   handleLogin = () => {
     this.setState({ loggedIn: true })
-    this.getNotes()
     this.props.history.push('dashboard')
   }
 
