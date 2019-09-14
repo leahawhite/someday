@@ -64,8 +64,8 @@ class App extends Component {
   handleLogin = () => {
     this.setState({ 
       loggedIn: true,
-      toDashboard: true
-    })
+      // toDashboard: true
+    }, () => this.props.history.push('/dashboard'))
   }
 
   handleLogout = () => {
@@ -144,7 +144,7 @@ class App extends Component {
       link: note.link,
       favorite: note.favorite,
       thoughts: note.thoughts, 
-    })
+    }, () => console.log('this.state', this.state))
   }
 
   handleNoteDelete = (id, cb) => {
@@ -212,7 +212,7 @@ class App extends Component {
     this.setState({
       notes: this.state.notes.map(nt =>
           (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
-    })
+    }, () => console.log('updatedFullNote', updatedFullNote))
   }
 
   render() {

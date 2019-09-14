@@ -18,12 +18,9 @@ h2 {
   margin-top: 3px;
 }
 
-.highlight {
-  display: inline;
-}
-
-.highlight input {
-  display: inline-block;
+.note label, .note p {
+  font-family: "Lato";
+  font-weight: 600;
 }
 
 .note textarea {
