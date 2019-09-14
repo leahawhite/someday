@@ -34,22 +34,22 @@ export default class LoginPage extends Component {
   }
   
   render() {
-    // const { toDashboard } = this.props
+    // const { redirect } = this.props
     const { error } = this.state
-    // if (toDashboard) {
+    // if (redirect) {
     //   return <Redirect to="/dashboard" />
     // }
     return (
       <div className="login">
         <header className="login-header">
           <Link to='/'><h1>Someday</h1></Link>
-          <p>Bookmark the latest cultural hits so that you too can experience them -- someday.</p>
+          <p>Bookmark the latest cultural hits so that you too can experience them... someday.</p>
         </header>
         <div className="form-container">
           <form className="login-form" onSubmit={this.handleSubmit}>
             <h2>User Login</h2>
             <div role='alert'>
-              {error && <p className='red'>{error}</p>}
+              {error && <p className='error'>{error}</p>}
             </div>
             <div className="input-container">
               <label htmlFor="email">Email</label>
