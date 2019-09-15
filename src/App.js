@@ -35,13 +35,12 @@ class App extends Component {
 
   componentDidMount() {
     this.getFolders()
-    if (this.state.loggedIn) {
-      this.getNotes()
-    }
   }
 
   handleLogin = () => {
-    this.setState({ loggedIn: true })
+    this.setState({ loggedIn: true }, () => {
+      this.getNotes()
+    })
     this.props.history.push('dashboard')
   }
 

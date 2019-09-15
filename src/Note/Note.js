@@ -20,7 +20,6 @@ export default class Note extends Component {
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
     const fave = note.favorite ? "fave" : "not-fave"
-    console.log('date', note.date_created)
     
     return (
       <div className="note">
