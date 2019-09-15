@@ -105,9 +105,12 @@ class App extends Component {
 
   handleChangeInput = e => {
     e.preventDefault();
+    const target = e.target
+    const value = target.type === 'checkbox' ? target.checked: target.value
+    const name = target.name
     this.setState({
       ...this.state,
-      [e.target.getAttribute('name')]: e.target.value
+      [name]: value
     })
   }
 
