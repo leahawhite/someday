@@ -3,7 +3,7 @@ import Button from '../Button/Button';
 import './noteform.css'
 
 export default class NoteForm extends Component {
-  
+
   render() {
     const { onSubmit, onCancel, changeInput } = this.props
     const { noteFolder="", what="", how="", who="", link="", favorite="", thoughts="" } = this.props
@@ -35,7 +35,7 @@ export default class NoteForm extends Component {
             type="checkbox" 
             name="favorite" 
             value={favorite}
-            // checked="favorite"
+            checked={favorite}
             onChange={e => changeInput(e)} 
             />
           <span className="slider round"></span>

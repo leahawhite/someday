@@ -8,18 +8,8 @@ export default class Note extends Component {
   static defaultProps = {
     note: {}
   }
-  // is more useful as date created
-  // renderDate = () => {
-  //   const { note } = this.props
-  //   let noteDate 
-  //   if (note.date_edited) {
-  //     noteDate = note.date_edited 
-  //   } else {
-  //     noteDate = note.date_created
-  //   }
-  //   return noteDate
-  // }
 
+  // CSS word wrap wasn't keeping link from expanding container size, so truncating
   renderLink = (link) => {
     if (link && link.length > 25) {
       return link.slice(0,25) + ' ...'
@@ -30,6 +20,7 @@ export default class Note extends Component {
   render() {
     const { note, onEdit, onDelete, onArchive } = this.props
     const fave = note.favorite ? "fave" : "not-fave"
+    console.log('date', note.date_created)
     
     return (
       <div className="note">
@@ -61,7 +52,7 @@ export default class Note extends Component {
         <div className="fave-container">
           <div>
             <label>Date added</label>
-            <Moment format="MM-DD-YYYY">{note.date_created}</Moment>
+            <Moment /*parse="MM/DD/YYYY, HH:MM:SS A"*/ format="MM-DD-YYYY">{note.date_created}</Moment>
           </div>
           <div className="star-container">
             <FontAwesomeIcon className={fave} icon="star" size="lg" />
