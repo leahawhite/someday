@@ -5,6 +5,7 @@ import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
+import NotesApiService from '../services/notes-api-service';
 import './notespage.css';
 
 class NotesPage extends Component {
@@ -16,7 +17,27 @@ class NotesPage extends Component {
     super(props)
     this.state = {
       sort: 'date',
+      notes: []
     }
+  }
+
+  componentDidMount() {
+    if (!this.props) {
+      this.getNotes()
+    }
+  }
+  getNotes = () => {
+    this.setState({ loading: true })
+    NotesApiService.getNotes()
+      .then(notes => {
+        this.setState({
+          notes,
+          loading: false
+        })
+      })
+      .catch(error => {
+        this.setState({ error: error })
+      })
   }
 
   sortResults = results => {

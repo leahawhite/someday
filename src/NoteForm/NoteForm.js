@@ -3,6 +3,12 @@ import Button from '../Button/Button';
 import './noteform.css'
 
 export default class NoteForm extends Component {
+  static defaultProps = {
+    onSubmit: () => {},
+    onCancel: () => {},
+    changeInput: () => {},
+    updatedNote: {}
+  }
 
   render() {
     const { onSubmit, onCancel, changeInput, updatedNote } = this.props
