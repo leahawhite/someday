@@ -5,7 +5,6 @@ import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
-import NotesApiService from '../services/notes-api-service';
 import './notespage.css';
 
 class NotesPage extends Component {
@@ -16,22 +15,8 @@ class NotesPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      sort: "",
+      sort: 'date',
     }
-  }
-
-  componentDidMount() {
-    this.setState({ loading: true })
-    NotesApiService.getNotes()
-      .then(notes => {
-        this.setState({
-          notes,
-          loading: false
-        })
-      })
-      .catch(error => {
-        this.setState({ error: error })
-      })
   }
 
   sortResults = results => {
@@ -54,31 +39,17 @@ class NotesPage extends Component {
     const { notes, folders, selectedFolderId } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     if (!notes.length) {
-      return (
-        <div className="notelist-header">
-          <h2>Get started by <Link to="/add-note">creating a new note.</Link></h2> 
-        </div>
-      )
+      return <h2>Get started by <Link to="/add-note">creating a new note.</Link></h2> 
     } else if (notes && notes.length && !selectedFolderId) {
-      return (
-        <div className="notelist-header">
-          <h2>Select a category to see your notes.</h2> 
-        </div>
-      )
-    } else if (selectedFolderId) {
-      return (
-        <div className="notelist-header">
-          <h2 className="selectedFolder-title">{selectedFolder.text}</h2>
-        </div>
-      )
-    }
+        return <h2>Select a category to see your notes.</h2> 
+      } else if (selectedFolderId) {
+          return <h2 className="selectedFolder-title">{selectedFolder.text}</h2>
+        }
   }
 
   renderNotes() {
-    const { selectedFolderId, notes, folders, loading } = this.props
-    const { editId, noteFolder, what, how, who, link, favorite, thoughts } = this.props
-    const { handleNoteSubmit, handleNoteCancel, handleNoteEdit } = this.props
-    const { handleChangeInput } = this.props
+    const { selectedFolderId, notes, folders, loading, editId, updatedNote } = this.props
+    const { handleNoteSubmit, handleNoteCancel, setInitialNote, handleChangeInput } = this.props
     const { handleNoteDelete, handleNoteArchive } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
@@ -87,13 +58,7 @@ class NotesPage extends Component {
         return <NoteForm 
                   key={note.id} 
                   note={note}
-                  noteFolder={noteFolder}
-                  what={what}
-                  how={how}
-                  who={who}
-                  link={link}
-                  favorite={favorite}
-                  thoughts={thoughts}
+                  updatedNote={updatedNote}
                   changeInput={handleChangeInput}
                   onSubmit={handleNoteSubmit} 
                   onCancel={handleNoteCancel} 
@@ -102,7 +67,7 @@ class NotesPage extends Component {
         return <Note 
                   key={note.id} 
                   note={note} 
-                  onEdit={handleNoteEdit} 
+                  onEdit={setInitialNote} 
                   onDelete={handleNoteDelete}
                   onArchive={handleNoteArchive} 
                />
@@ -143,7 +108,9 @@ class NotesPage extends Component {
     const { error } = this.props
     return (
       <>
-        {this.renderHeader()}
+        <div className="notelist-header">
+          {this.renderHeader()}
+        </div>
         <div className="notelist">
           <div role="alert">
             {error && <p className="error">{error}</p>}
