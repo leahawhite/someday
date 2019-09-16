@@ -12,54 +12,55 @@ import TokenService from './services/token-service';
 import './app.css';
 
 class App extends Component {
-  state = {
-    loggedIn: TokenService.getAuthToken(),
-    selectedFolderId: null,
-    redirect: false,
-    loading: false,
-    error: null,
-    notes: [],
-    folders: [],
-    editId: null,
-    updatedNote: {
-      id: null,
-      folder: "",  
-      what: "",
-      how: "",
-      who: "",
-      link: "",
-      favorite: "",
-      thoughts: "",
-    },
+  constructor(props) {
+    super(props)
+    this.state = {
+      loggedIn: TokenService.getAuthToken(),
+      selectedFolderId: null,
+      redirect: false,
+      loading: false,
+      error: null,
+      notes: [],
+      folders: [],
+      editId: null,
+      updatedNote: {
+        id: null,
+        folder: "",  
+        what: "",
+        how: "",
+        who: "",
+        link: "",
+        favorite: "",
+        thoughts: "",
+      }
+    }
   }
-
+  
   componentDidMount() {
-    this.updateStateWithLocalStorage()
-    window.addEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
+    // this.populateStateWithLocalStorage()
+    // window.addEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
     this.getFolders()
   }
 
-  componentWillUnmount() {
-    this.saveStateToLocalStorage()
-    window.removeEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
+  //   this.saveStateToLocalStorage()
+  // }
 
   // save state to local storage in case of window refresh
   saveStateToLocalStorage = () => {
     // eslint-disable-next-line
     for (let key in this.state) {
-      // save to localStorage
       localStorage.setItem(key, JSON.stringify(this.state[key]));
     }
   }
 
-  // persist state with local storage
-  updateStateWithLocalStorage = () => {
+  // load local storage into state
+  populateStateWithLocalStorage = () => {
     // eslint-disable-next-line
     for (let key in this.state) {
       if (localStorage.hasOwnProperty(key)) {
         let value = localStorage.getItem(key);
-    // parse the localStorage string and setState
         try {
           value = JSON.parse(value);
           this.setState({ [key]: value });
@@ -106,9 +107,9 @@ class App extends Component {
           loading: false
         })
       })
-      .then(notes => {
-        localStorage.setItem("notes", JSON.stringify(notes))
-      })
+      // .then(notes => {
+      //   localStorage.setItem("notes", JSON.stringify(notes))
+      // })
       .catch(error => {
         this.setState({ error: error })
       })

@@ -3,6 +3,10 @@ import { Link, NavLink, withRouter } from 'react-router-dom';
 import './topnav.css'
 
 class TopNav extends Component {
+  static defaultProps = {
+    onLogout: () => {},
+    loggedIn: Boolean
+  }
 
   renderLogoutLink() {
     const { onLogout } = this.props

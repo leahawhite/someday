@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import Button from '../Button/Button';
 import './addnotepage.css'
 
 class AddNotePage extends Component {
-  static propTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func,
-    }),
+  static drefaultProps = {
+    history: {
+      push: () => {},
+    }
   }
   
   handleCancel = () => {
