@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
 import Button from '../Button/Button';
 import './addnotepage.css'
 
@@ -31,10 +32,11 @@ class AddNotePage extends Component {
   }
   
   render () {
-    const { redirect } = this.props
-    const { error } = this.props
+    const { redirect, loading, error } = this.props
     if (redirect) {
       return <Redirect to="/dashboard" />
+    } else if (loading) {
+      return <Spinner />
     }
     return (
       <section className="add-note">

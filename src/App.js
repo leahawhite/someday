@@ -17,24 +17,58 @@ class App extends Component {
     selectedFolderId: null,
     redirect: false,
     loading: false,
+    error: null,
     notes: [],
     folders: [],
-    error: null,
-    sort: 'date',
-    selectedNote: null,
     editId: null,
-    updatedNote: {},
-    noteFolder: "",  
-    what: "",
-    how: "",
-    who: "",
-    link: "",
-    favorite: "",
-    thoughts: "",
+    updatedNote: {
+      id: null,
+      folder: "",  
+      what: "",
+      how: "",
+      who: "",
+      link: "",
+      favorite: "",
+      thoughts: "",
+    },
   }
 
   componentDidMount() {
+    this.updateStateWithLocalStorage()
+    window.addEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
     this.getFolders()
+  }
+
+  componentWillUnmount() {
+    this.saveStateToLocalStorage()
+    window.removeEventListener('beforeunload', this.saveStateToLocalStorage.bind(this))
+  }
+
+  // save state to local storage in case of window refresh
+  saveStateToLocalStorage = () => {
+    // eslint-disable-next-line
+    for (let key in this.state) {
+      // save to localStorage
+      localStorage.setItem(key, JSON.stringify(this.state[key]));
+    }
+  }
+
+  // persist state with local storage
+  updateStateWithLocalStorage = () => {
+    // eslint-disable-next-line
+    for (let key in this.state) {
+      if (localStorage.hasOwnProperty(key)) {
+        let value = localStorage.getItem(key);
+    // parse the localStorage string and setState
+        try {
+          value = JSON.parse(value);
+          this.setState({ [key]: value });
+        } catch (e) {
+          // handle empty string
+          this.setState({ [key]: value });
+        }
+      }
+    }
   }
 
   handleLogin = () => {
@@ -72,6 +106,9 @@ class App extends Component {
           loading: false
         })
       })
+      .then(notes => {
+        localStorage.setItem("notes", JSON.stringify(notes))
+      })
       .catch(error => {
         this.setState({ error: error })
       })
@@ -84,12 +121,15 @@ class App extends Component {
   }
 
   handleNewNoteSubmit = newNote => {
+    this.setState({ loading: true })
     NotesApiService.insertNote(newNote)
       .then(newNote => {
         this.addNewNote(newNote)
       })
       .then(() => {
-        this.setState({ redirect: true })
+        this.setState({ 
+          loading: false,
+          redirect: true })
       })
       .catch(res => {
         this.setState({ error: res.error })
@@ -105,60 +145,49 @@ class App extends Component {
   handleChangeInput = e => {
     e.preventDefault();
     const target = e.target
-    const value = target.type === 'checkbox' ? target.checked: target.value
     const name = target.name
+    let value
+    if (target.type === 'checkbox') {
+      value = target.checked
+    } else if (name === 'folder') {
+      value = Number(target.value)
+    } else {
+      value = target.value
+    }
     this.setState({
       ...this.state,
-      [name]: value
+      updatedNote: {
+        ...this.state.updatedNote,
+        [name]: value
+      }
     })
   }
 
-  // handleChangeInput = e => {
-  //   e.preventDefault();
-  //   this.setState({
-  //     ...this.state,
-  //     updatedNote: {
-  //       ...this.state.updatedNote,
-  //       [e.target.getAttribute('name')]: e.target.value
-  //     }
-  //   }, () => console.log(this.state))
-  // }
-
-  handleNoteEdit = note => {
-    // populating state with orig values of note
-    this.setState({
-      selectedNote: note,
-      editId: note.id,
-      noteFolder: note.folder,  
-      what: note.what,
-      how: note.how,
-      who: note.who,
-      link: note.link,
-      favorite: note.favorite,
-      thoughts: note.thoughts, 
-    }, () => console.log('this.state', this.state))
+  setInitialNote = note => {
+    const updatedNote = {...this.state.updatedNote}
+    // eslint-disable-next-line
+    for (let key in updatedNote) {
+      updatedNote[key] = note[key]
+    } 
+      this.setState({
+        updatedNote,
+        editId: note.id
+      }, () => {console.log('this.state', this.state)})
   }
 
   handleUpdatedNoteSubmit = (e, cb) => {
     e.preventDefault()
-    const { noteFolder, what, how, who, link, favorite, thoughts, selectedNote } = this.state
+    const { updatedNote } = this.state
     this.setState({
-      editId: null
+      editId: null,
+      loading: true
     })
-    const updatedNote = {
-      id: selectedNote.id,
-      folder: Number(noteFolder),
-      what,
-      how,
-      who,
-      link,
-      favorite,
-      thoughts,
-    }
     NotesApiService.updateNote(updatedNote)
       .then(response => {
-        this.setState(
-          { updatedNote: response },
+        this.setState({
+          updatedNote: response,
+          loading: false
+        },
           () => {this.updateNotes(this.state.updatedNote)})
       })
       .catch(res => {
@@ -172,7 +201,7 @@ class App extends Component {
     this.setState({
       notes: this.state.notes.map(nt =>
           (nt.id !== updatedFullNote.id) ? nt : updatedFullNote)
-    }, () => console.log('updatedFullNote', updatedFullNote))
+    }, () => console.log('updated this.state',this.state))
   }
 
   handleNoteEditCancel = id => {
@@ -198,16 +227,17 @@ class App extends Component {
     this.setState({ notes: newNotes })
   }
 
-  handleNoteArchive = note => {
+  handleArchivedNote = note => {
+    const archivedNote = {...this.state.updatedNote}
+    // eslint-disable-next-line
+    for (let key in archivedNote) {
+      archivedNote[key] = note[key]
+    }
+    archivedNote.folder = 7
     this.setState({
-      selectedNote: note,
-      noteFolder: 7,  
+      updatedNote: archivedNote,
     }, () => {
-      const updatedNote = {
-        "id": this.state.selectedNote.id,
-        "folder": this.state.noteFolder,
-      }
-      NotesApiService.updateNote(updatedNote)
+      NotesApiService.updateNote(this.state.updatedNote)
         .then(response => {
           this.setState(
             { updatedNote: response },
@@ -230,13 +260,7 @@ class App extends Component {
       folders,
       folder,
       editId,
-      noteFolder,  
-      what,
-      how,
-      who,
-      link,
-      favorite,
-      thoughts
+      updatedNote
     } = this.state
     
     return (
@@ -267,17 +291,11 @@ class App extends Component {
                 folders={folders}
                 folder={folder}
                 editId={editId}
-                noteFolder={noteFolder}
-                what={what}
-                how={how}
-                who={who}
-                link={link}
-                favorite={favorite}
-                thoughts={thoughts}
+                updatedNote={updatedNote}
                 handleNoteSubmit={this.handleUpdatedNoteSubmit}
                 handleNoteCancel={this.handleNoteEditCancel}
-                handleNoteEdit={this.handleNoteEdit}
-                handleNoteArchive={this.handleNoteArchive}
+                setInitialNote={this.setInitialNote}
+                handleNoteArchive={this.handleArchivedNote}
                 handleChangeInput={this.handleChangeInput}
                 handleNoteDelete={this.handleNoteDelete}
                 {...props} />}
