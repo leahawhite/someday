@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import history from './history';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import App from './App';
 import './index.css';
@@ -30,7 +29,7 @@ library.add(
 )
 
 ReactDOM.render(
-  <BrowserRouter history={history}>
+  <BrowserRouter>
     <App />
   </BrowserRouter>, 
   document.getElementById('root')
