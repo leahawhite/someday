@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
+import NotesContext from '../context/NotesContext';
 import Button from '../Button/Button';
+import NotesApiService from '../services/notes-api-service';
 import './addnotepage.css'
 
 class AddNotePage extends Component {
-  static drefaultProps = {
+  static defaultProps = {
     history: {
       push: () => {},
     }
   }
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+    }
+  }
+
+  static contextType = NotesContext
   
   handleCancel = () => {
     this.props.history.push('/dashboard')
@@ -27,14 +37,33 @@ class AddNotePage extends Component {
       favorite: favorite.value,
       thoughts: thoughts.value
     }
-    this.props.submitNewNote(newNote)
+    this.setState({ loading: true })
+    NotesApiService.insertNote(newNote)
+      .then(this.context.addNewNote)
+      .then(() => {
+        folder.value = ''
+        what.value = ''
+        how.value = ''
+        who.value = ''
+        link.value = ''
+        favorite.value = ''
+        thoughts.value = ''
+      })
+      .then(() => {
+        this.setState({
+          loading: false,
+        }, () => {
+          this.props.history.push('/dashboard')
+        })
+      })
+      .catch(this.context.setError)
+      
   }
-  
+
   render () {
-    const { redirect, loading, error } = this.props
-    if (redirect) {
-      return <Redirect to="/dashboard" />
-    } else if (loading) {
+    const { loading } = this.props
+    // const { error } = this.context
+    if (loading) {
       return <Spinner />
     }
     return (
@@ -43,11 +72,11 @@ class AddNotePage extends Component {
           <h2>Add New Note</h2>
         </div>
         <div role='alert'>
-          {error && <p className='error'>{error}</p>}
+          {/* {error && <p className='error'>{error}</p>} */}
         </div>
-        <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
+        <form className="note edit" onSubmit={this.handleSubmit}>
             <label htmlFor="folder">Category?</label>
-            <select id="folder" name="folder" required>
+            <select id="folder" name="folder" aria-label="folder" required>
               <option value="1">Watch</option>
               <option value="2">Read</option>
               <option value="3">Listen</option>
@@ -57,25 +86,25 @@ class AddNotePage extends Component {
               <option value="7">Archive</option>
             </select>
             <label htmlFor="what">What?</label>
-            <input id="what" type="text" name="what" required />
+            <input id="what" type="text" name="what" aria-label="what" required />
             <label htmlFor="how">Where can I find it?</label>
-            <input id="how" type="text" name="how" />
+            <input id="how" type="text" name="how" aria-label="how" />
             <label htmlFor="who">Who recommended it?</label>
-            <input id="who" type="text" name="who" />
+            <input id="who" type="text" name="who" aria-label="who" />
             <label htmlFor="link">Link</label>
-            <input id="link" type="text" name="link" />
+            <input id="link" type="text" name="link" aria-label="link" />
             <p>Favorite?</p>   
             <label className="switch" htmlFor="favorite">
-              <input id="favorite" type="checkbox" name="favorite" />
+              <input id="favorite" type="checkbox" name="favorite" aria-label="favorite" />
               <span className="slider round"></span>
             </label>
           <div>
             <label htmlFor="thoughts">Notes</label>
-            <textarea id="notes" rows="3" name="thoughts" />
+            <textarea id="notes" rows="3" name="thoughts" aria-label="thoughts" />
           </div>
           <div className="addnote-buttons">
             <Button btnType="submit" btnText="Save" btnClass="note-btn"/>
-            <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => this.handleCancel(e)} />
+            <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={this.handleCancel} />
           </div>
         </form>
       </section>

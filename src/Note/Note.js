@@ -6,11 +6,15 @@ import './note.css';
 
 export default class Note extends Component {
   static defaultProps = {
-    note: {}
+    note: {},
+    onEdit: () => {},
+    onDelete: () => {},
+    onArchive: () => {}
   }
-
-  // CSS word wrap wasn't keeping link from expanding container size, so truncating
-  renderLink = (link) => {
+  
+  // CSS word wrap wasn't keeping link 
+  // from expanding container size, so truncating
+  renderLink = link => {
     if (link && link.length > 25) {
       return link.slice(0,25) + ' ...'
     }
@@ -51,7 +55,7 @@ export default class Note extends Component {
         <div className="fave-container">
           <div>
             <label>Date added</label>
-            <Moment /*parse="MM/DD/YYYY, HH:MM:SS A"*/ format="MM-DD-YYYY">{note.date_created}</Moment>
+            <Moment format="MM-DD-YYYY">{note.date_created}</Moment>
           </div>
           <div className="star-container">
             <FontAwesomeIcon className={fave} icon="star" size="lg" />
