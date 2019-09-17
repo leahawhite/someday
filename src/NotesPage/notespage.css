@@ -10,14 +10,30 @@
   font-weight: 600;
 }
 
+.notelist-header a {
+  color: black;
+  text-decoration: underline;
+}
+
+.notelist-header a:hover, 
+.notelist-header a:focus, 
+.notelist-header a:link {
+  text-decoration: none;
+  border-bottom: 3px solid #ed8400;
+  transition: background 250ms ease-in-out,
+        transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
 .notes-content {
   display: flex;
+  justify-content: center;
   width: 100%;
 }
 
 .notelist {
   width: 100%;
-  /* max-width: 500px; */
   min-height: 75vh;
   display: flex;
   flex-direction: column;
@@ -34,5 +50,16 @@
 }
 
 .sort-results-form button:nth-child(1) {
-  margin-right: 1%;
+  border-right: 3px solid white;
+}
+
+.sort-results-form button {
+  background-color: #ed8400;
+  border-radius: 8px;
+}
+
+@media only screen and (min-width: 600px) {
+  .sort-results-form button {
+    font-size: 18px;
+  }
 }

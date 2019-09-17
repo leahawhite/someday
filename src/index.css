@@ -185,6 +185,16 @@ span {
   font-family: 'Lato';
 }
 
+input[type='text'], input[type='textarea'] {
+  font-size: 15px;
+  font-family: 'Lato';
+}
+
+textarea, select, option {
+  font-size: 15px;
+  font-family: 'Lato';
+}  
+
 .hidden {
   display: none;
 }

@@ -16,6 +16,11 @@ h2 {
   padding: 8px;
   border-radius: 4px;
   margin-top: 3px;
+  font-size: 15px;
+}
+
+.note option {
+  /* font-size: 15px; */
 }
 
 .note label, .note p {
