@@ -11,7 +11,7 @@ class TopNav extends Component {
   renderLogoutLink() {
     const { onLogout } = this.props
     return (
-      <nav className="TopNav_logged-in" role="navigation">
+      <nav aria-label="Topnav logged-in" role="navigation">
         <Link
           className="topnavlink" 
           to='/add-note'>
@@ -29,8 +29,8 @@ class TopNav extends Component {
   
   renderLoginLink() {
     return (
-      <nav className="TopNav_not-logged-in" role="navigation">
-        <div className="TopNav_not-logged-in links">
+      <nav aria-label="Topnav not-logged-in"  role="navigation">
+        <div>
           <NavLink className="navlink-right" to="/signup" isActive={this.loginMenu} activeClassName="hidden">
             SIGN UP
           </NavLink>

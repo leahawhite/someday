@@ -19,7 +19,6 @@ export default class NoteForm extends Component {
     this.context.clearError()
     this.context.cancelEdit()
     const { updatedNote } = this.context
-    console.log('updatedNote', updatedNote)
     NotesApiService.updateNote(updatedNote)
       .then(this.context.setUpdatedNote(updatedNote))
       .then(this.context.updateNotes(updatedNote))

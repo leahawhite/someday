@@ -105,7 +105,6 @@ export class NotesProvider extends Component {
 
   updateNotes = updatedNote => {
     const notes = this.state.notes
-    console.log('update Notes updatedNote', updatedNote)
     const updatedFullNote = Object.assign(notes[notes.findIndex(nt => nt.id === updatedNote.id)], updatedNote)
     this.setState({
       notes: this.state.notes.map(nt =>
@@ -130,10 +129,9 @@ export class NotesProvider extends Component {
       archivedNote[key] = note[key]
     }
     archivedNote.folder = 7
-    console.log('archivedNote', archivedNote)
     this.setState({
-      updatedNote: archivedNote,
-    }, () => {console.log('end of archive note updatednote', this.state.updatedNote)}) 
+      updatedNote: archivedNote
+    }) 
   }
   
   render() {
