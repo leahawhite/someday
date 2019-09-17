@@ -16,7 +16,25 @@ From the landing page, users must either log in with the demo to explore or sign
 
 ## Screenshots
 
-(Coming soon)
+Dashboard
+
+![Dashboard](/screenshots/NoteView.jpg "Note View")
+
+Edit in place
+
+![Note Edit](/screenshots/NoteEdit.jpg "Note Edit")
+
+Add a new note
+
+![Add Note](/screenshots/AddNote.jpg "Add Note")
+
+Login
+
+![Login](/screenshots/Login.jpg "Login")
+
+Empty Folder
+
+![Empty Folder](/screenshots/EmptyFolder.jpg "Empty Folder")
 
 ## Security
 

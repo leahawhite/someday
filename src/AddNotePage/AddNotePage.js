@@ -61,8 +61,8 @@ class AddNotePage extends Component {
   }
 
   render () {
-    const { loading } = this.props
-    // const { error } = this.context
+    const { loading } = this.state
+    const { error } = this.context
     if (loading) {
       return <Spinner />
     }
@@ -72,7 +72,7 @@ class AddNotePage extends Component {
           <h2>Add New Note</h2>
         </div>
         <div role='alert'>
-          {/* {error && <p className='error'>{error}</p>} */}
+          {error && <p className='error'>{error}</p>}
         </div>
         <form className="note edit" onSubmit={this.handleSubmit}>
             <label htmlFor="folder">Category?</label>
