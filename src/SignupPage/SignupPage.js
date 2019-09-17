@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import Button from '../Button/Button';
 import TokenService from '../services/token-service';
 import AuthApiService from '../services/auth-api-service';
@@ -37,11 +36,8 @@ export default class SignupPage extends Component {
   }
 
   render() {
-    const { redirect } = this.props
     const { error } = this.state
-    if (redirect) {
-      return <Redirect to="/dashboard" />
-    }
+    
     return (
       <div className="signup">
         <div className="form-container">

@@ -60,7 +60,6 @@ class App extends Component {
     const {
       loggedIn, 
       redirect,
-      loading,
       folders,
       selectedFolderId
     } = this.state
@@ -92,15 +91,12 @@ class App extends Component {
               <PrivateRoute key="private" path={'/dashboard'} render={props =>
                 <NotesPage
                   key="notespage"
-                  loading={loading}
                   folders={folders}
                   selectedFolderId={selectedFolderId}
                   {...props} />}
               />
               <PrivateRoute path={'/add-note'} render={props =>
                 <AddNotePage 
-                  loading={loading}
-                  redirect={redirect}
                   {...props} />}
               />
               <Route component={NotFoundPage} />
