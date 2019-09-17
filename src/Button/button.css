@@ -6,7 +6,8 @@ button {
     text-decoration: none;
     background: #0069ed;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 35px;
+
     font-size: 1rem;
     cursor: pointer;
     text-align: center;
@@ -20,11 +21,6 @@ button:hover,
 button:focus {
     background: #0053ba;
 }
-
-/* button:focus {
-    outline: 1px solid #fff;
-    outline-offset: -4px;
-} */
 
 button:active {
     transform: scale(0.99);

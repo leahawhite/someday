@@ -10,6 +10,7 @@
 
 .note a {
   word-wrap: break-all;
+  color: 
 }
 
 .note:hover {
@@ -49,6 +50,7 @@
 
 .note-buttons button {
   margin-right: 10px;
+  width: 85px;
 }
 
 .fave {

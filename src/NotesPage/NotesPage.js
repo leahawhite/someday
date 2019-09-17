@@ -127,8 +127,7 @@ class NotesPage extends Component {
   }
 
   render() {
-    const { error } = this.context
-    console.log('error', error)
+    // const { error } = this.context
     return (
       <>
         <div className="notelist-header">

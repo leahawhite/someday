@@ -12,14 +12,6 @@ export default class Note extends Component {
     onArchive: () => {}
   }
   
-  renderDate() {
-    const note = this.props.note
-    const date = this.props.note.date_created
-    console.log('date', date)
-    
-
-  }
-
   // CSS word wrap wasn't keeping link 
   // from expanding container size, so truncating
   renderLink = link => {
@@ -63,7 +55,6 @@ export default class Note extends Component {
         <div className="fave-container">
           <div>
             <label>Date added</label>
-            <span>{this.renderDate()}</span>
             <Moment format="MM-DD-YYYY">{note.date_created}</Moment>
           </div>
           <div className="star-container">

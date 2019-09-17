@@ -62,8 +62,7 @@ class AddNotePage extends Component {
 
   render () {
     const { loading } = this.props
-    const { error } = this.context
-    console.log('AddNotePage error', error)
+    // const { error } = this.context
     if (loading) {
       return <Spinner />
     }
@@ -77,7 +76,7 @@ class AddNotePage extends Component {
         </div>
         <form className="note edit" onSubmit={this.handleSubmit}>
             <label htmlFor="folder">Category?</label>
-            <select id="folder" name="folder" required>
+            <select id="folder" name="folder" aria-label="folder" required>
               <option value="1">Watch</option>
               <option value="2">Read</option>
               <option value="3">Listen</option>
@@ -87,21 +86,21 @@ class AddNotePage extends Component {
               <option value="7">Archive</option>
             </select>
             <label htmlFor="what">What?</label>
-            <input id="what" type="text" name="what" required />
+            <input id="what" type="text" name="what" aria-label="what" required />
             <label htmlFor="how">Where can I find it?</label>
-            <input id="how" type="text" name="how" />
+            <input id="how" type="text" name="how" aria-label="how" />
             <label htmlFor="who">Who recommended it?</label>
-            <input id="who" type="text" name="who" />
+            <input id="who" type="text" name="who" aria-label="who" />
             <label htmlFor="link">Link</label>
-            <input id="link" type="text" name="link" />
+            <input id="link" type="text" name="link" aria-label="link" />
             <p>Favorite?</p>   
             <label className="switch" htmlFor="favorite">
-              <input id="favorite" type="checkbox" name="favorite" />
+              <input id="favorite" type="checkbox" name="favorite" aria-label="favorite" />
               <span className="slider round"></span>
             </label>
           <div>
             <label htmlFor="thoughts">Notes</label>
-            <textarea id="notes" rows="3" name="thoughts" />
+            <textarea id="notes" rows="3" name="thoughts" aria-label="thoughts" />
           </div>
           <div className="addnote-buttons">
             <Button btnType="submit" btnText="Save" btnClass="note-btn"/>
