@@ -68,6 +68,10 @@ button:focus {
   color: #fff;
 }
 
+.auth {
+  margin-bottom: 10px;
+}
+
 @media only screen and (min-width: 768px) {
   .login, .signup {
     width: 450px;
