@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
+import NotesContext from '../context/NotesContext';
+import NotesApiService from '../services/notes-api-service';
 import './noteform.css'
 
 export default class NoteForm extends Component {
   static defaultProps = {
     onSubmit: () => {},
-    onCancel: () => {},
+    cancelEdit: () => {},
     changeInput: () => {},
     updatedNote: {}
   }
 
+  static contextType = NotesContext
+
+  handleSubmit = e => {
+    e.preventDefault()
+    this.context.clearError()
+    this.context.cancelEdit()
+    const { updatedNote } = this.context
+    console.log('updatedNote', updatedNote)
+    NotesApiService.updateNote(updatedNote)
+      .then(this.context.setUpdatedNote(updatedNote))
+      .then(this.context.updateNotes(updatedNote))
+      .catch(this.context.setError)
+  }
+
   render() {
-    const { onSubmit, onCancel, changeInput, updatedNote } = this.props
+    const { cancelEdit, changeInput, updatedNote } = this.context
     
     return (
-      <form className="note edit" onSubmit={(e) => onSubmit(e)}>
+      <form className="note edit" onSubmit={(e) => this.handleSubmit(e)}>
         <label htmlFor="folder">Category?</label>
         <select id="folder" name="folder" value={updatedNote.folder} onChange={(e) => changeInput(e)}>
           <option value="1">Watch</option>
@@ -51,7 +67,7 @@ export default class NoteForm extends Component {
         </div>
         <div className="noteform-buttons">
           <Button btnType="submit" btnText="Save" btnClass="note-btn" />
-          <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => onCancel(e)} />
+          <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => cancelEdit(e)} />
         </div>
       </form>
     )

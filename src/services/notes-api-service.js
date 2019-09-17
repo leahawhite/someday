@@ -3,10 +3,7 @@ import TokenService from './token-service'
 
 const NotesApiService = {
   getFolders() {
-    return fetch(`${config.API_ENDPOINT}/folders`, {
-    headers: {
-      'authorization': `bearer ${TokenService.getAuthToken()}`,
-    }})
+    return fetch(`${config.API_ENDPOINT}/folders`)
     .then(res =>
       (!res.ok)
         ? res.json().then(e => Promise.reject(e))
@@ -60,13 +57,8 @@ const NotesApiService = {
       headers: {
         'content-type': 'application/json',
         'authorization': `bearer ${TokenService.getAuthToken()}`,
-      },
+      }
     })
-    .then(res =>
-      (!res.ok)
-        ? res.json().then(e => Promise.reject(e))
-        : res.json()
-    )
   }
 }
 

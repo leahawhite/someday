@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { NotesProvider } from './context/NotesContext'
 import App from './App';
 import './index.css';
 import {
@@ -30,7 +31,9 @@ library.add(
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <NotesProvider>
+      <App />
+    </NotesProvider>
   </BrowserRouter>, 
   document.getElementById('root')
 );

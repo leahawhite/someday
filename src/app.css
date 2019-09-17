@@ -3,7 +3,7 @@
   min-height: 100vh;
 }
 
-.main-container {
+.container {
   display: flex;
   align-content: center;
   overflow: hidden;
