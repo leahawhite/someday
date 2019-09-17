@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import NotesContext from '../context/NotesContext';
 import Spinner from '../Spinner/Spinner';
 import EmptyFolder from '../EmptyFolder/EmptyFolder';
 import Button from '../Button/Button';
@@ -9,35 +10,38 @@ import NotesApiService from '../services/notes-api-service';
 import './notespage.css';
 
 class NotesPage extends Component {
-  static defaultProps = {
-    notes: []
-  }
-  
   constructor(props) {
     super(props)
     this.state = {
       sort: 'date',
-      notes: []
     }
   }
 
+  static contextType = NotesContext
+
   componentDidMount() {
-    if (!this.props) {
-      this.getNotes()
-    }
-  }
-  getNotes = () => {
-    this.setState({ loading: true })
+    this.context.clearError()
     NotesApiService.getNotes()
-      .then(notes => {
-        this.setState({
-          notes,
-          loading: false
-        })
-      })
-      .catch(error => {
-        this.setState({ error: error })
-      })
+      .then(this.context.setNotes)
+      .catch(this.context.setError)
+  }
+
+  handleDelete = id => {
+    if (!window.confirm('Are you sure?')) {
+      return
+    }
+    NotesApiService.deleteNote(id)
+      .then(this.context.deleteNote(id))
+      .catch(this.context.setError)
+  }
+
+  handleArchive = async note => {
+    await this.context.archiveNote(note)
+    const { updatedNote } = this.context
+    await NotesApiService.updateNote(updatedNote)
+      .then(this.context.setUpdatedNote(updatedNote))
+      .then(this.context.updateNotes(updatedNote))
+      .catch(this.context.setError)
   }
 
   sortResults = results => {
@@ -57,8 +61,9 @@ class NotesPage extends Component {
   }
 
   renderHeader() {
-    const { notes, folders, selectedFolderId } = this.props
-    const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
+    const { notes = [] } = this.context
+    const { folders = [], selectedFolderId } = this.props
+     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     if (!notes.length) {
       return <h2>Get started by <Link to="/add-note">creating a new note.</Link></h2> 
     } else if (notes && notes.length && !selectedFolderId) {
@@ -69,9 +74,9 @@ class NotesPage extends Component {
   }
 
   renderNotes() {
-    const { selectedFolderId, notes, folders, loading, editId, updatedNote } = this.props
-    const { handleNoteSubmit, handleNoteCancel, setInitialNote, handleChangeInput } = this.props
-    const { handleNoteDelete, handleNoteArchive } = this.props
+    const { notes, editId } = this.context
+    const { selectedFolderId, folders } = this.props
+    const { loading } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
     const noteList = results && results.length ? this.sortResults(results).map(note => {
@@ -79,18 +84,14 @@ class NotesPage extends Component {
         return <NoteForm 
                   key={note.id} 
                   note={note}
-                  updatedNote={updatedNote}
-                  changeInput={handleChangeInput}
-                  onSubmit={handleNoteSubmit} 
-                  onCancel={handleNoteCancel} 
                 />
       } else {
         return <Note 
                   key={note.id} 
-                  note={note} 
-                  onEdit={setInitialNote} 
-                  onDelete={handleNoteDelete}
-                  onArchive={handleNoteArchive} 
+                  note={note}
+                  onEdit={this.context.handleEdit}
+                  onDelete={this.handleDelete}
+                  onArchive={this.handleArchive} 
                />
       }
     }) : null 
@@ -126,7 +127,8 @@ class NotesPage extends Component {
   }
 
   render() {
-    const { error } = this.props
+    const { error } = this.context
+    console.log('error', error)
     return (
       <>
         <div className="notelist-header">
@@ -134,7 +136,7 @@ class NotesPage extends Component {
         </div>
         <div className="notelist">
           <div role="alert">
-            {error && <p className="error">{error}</p>}
+            {/* {error && <p className="error">{error}</p>} */}
           </div>
           {this.renderNotes()}
         </div>

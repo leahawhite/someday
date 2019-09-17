@@ -12,7 +12,8 @@ class SideNav extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: null
+      selected: null,
+      loading: null
     }
   }
 
@@ -25,7 +26,7 @@ class SideNav extends Component {
   }
 
   render() {
-    const { folders } = this.props
+    const { folders=[] } = this.props
     const folderList = folders.map((folder) => {
     const isSelected = folder === this.state.selected
     const folderClassName = classnames('folder', {

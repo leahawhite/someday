@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
+import NotesContext from '../context/NotesContext';
 import Button from '../Button/Button';
+import NotesApiService from '../services/notes-api-service';
 import './addnotepage.css'
 
 class AddNotePage extends Component {
-  static drefaultProps = {
+  static defaultProps = {
     history: {
       push: () => {},
     }
   }
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+    }
+  }
+
+  static contextType = NotesContext
   
   handleCancel = () => {
     this.props.history.push('/dashboard')
@@ -27,14 +37,34 @@ class AddNotePage extends Component {
       favorite: favorite.value,
       thoughts: thoughts.value
     }
-    this.props.submitNewNote(newNote)
+    this.setState({ loading: true })
+    NotesApiService.insertNote(newNote)
+      .then(this.context.addNewNote)
+      .then(() => {
+        folder.value = ''
+        what.value = ''
+        how.value = ''
+        who.value = ''
+        link.value = ''
+        favorite.value = ''
+        thoughts.value = ''
+      })
+      .then(() => {
+        this.setState({
+          loading: false,
+        }, () => {
+          this.props.history.push('/dashboard')
+        })
+      })
+      .catch(this.context.setError)
+      
   }
-  
+
   render () {
-    const { redirect, loading, error } = this.props
-    if (redirect) {
-      return <Redirect to="/dashboard" />
-    } else if (loading) {
+    const { loading } = this.props
+    const { error } = this.context
+    console.log('AddNotePage error', error)
+    if (loading) {
       return <Spinner />
     }
     return (
@@ -43,9 +73,9 @@ class AddNotePage extends Component {
           <h2>Add New Note</h2>
         </div>
         <div role='alert'>
-          {error && <p className='error'>{error}</p>}
+          {/* {error && <p className='error'>{error}</p>} */}
         </div>
-        <form className="note edit" onSubmit={e => this.handleSubmit(e)}>
+        <form className="note edit" onSubmit={this.handleSubmit}>
             <label htmlFor="folder">Category?</label>
             <select id="folder" name="folder" required>
               <option value="1">Watch</option>
@@ -75,7 +105,7 @@ class AddNotePage extends Component {
           </div>
           <div className="addnote-buttons">
             <Button btnType="submit" btnText="Save" btnClass="note-btn"/>
-            <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={e => this.handleCancel(e)} />
+            <Button btnType="button" btnText="Cancel" btnClass="note-btn" onClick={this.handleCancel} />
           </div>
         </form>
       </section>
