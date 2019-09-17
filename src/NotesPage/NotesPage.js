@@ -14,6 +14,7 @@ class NotesPage extends Component {
     super(props)
     this.state = {
       sort: 'date',
+      loading: false
     }
   }
 
@@ -21,9 +22,11 @@ class NotesPage extends Component {
 
   componentDidMount() {
     this.context.clearError()
+    this.setState({ loading: true })
     NotesApiService.getNotes()
       .then(this.context.setNotes)
       .catch(this.context.setError)
+    this.setState({ loading: false })
   }
 
   handleDelete = id => {
@@ -75,8 +78,8 @@ class NotesPage extends Component {
 
   renderNotes() {
     const { notes, editId } = this.context
+    const { loading } = this.state
     const { selectedFolderId, folders } = this.props
-    const { loading } = this.props
     const selectedFolder = folders && folders.length && folders.find(folder => folder.id === selectedFolderId)
     const results = notes && notes.length && notes.filter(note => note.folder === selectedFolderId)
     const noteList = results && results.length ? this.sortResults(results).map(note => {
@@ -127,7 +130,7 @@ class NotesPage extends Component {
   }
 
   render() {
-    // const { error } = this.context
+    const { error } = this.context
     return (
       <>
         <div className="notelist-header">
@@ -135,7 +138,7 @@ class NotesPage extends Component {
         </div>
         <div className="notelist">
           <div role="alert">
-            {/* {error && <p className="error">{error}</p>} */}
+            {error && <p className="error">{error}</p>}
           </div>
           {this.renderNotes()}
         </div>

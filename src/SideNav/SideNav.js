@@ -13,7 +13,6 @@ class SideNav extends Component {
     super(props)
     this.state = {
       selected: null,
-      loading: null
     }
   }
 
