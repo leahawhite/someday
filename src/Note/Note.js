@@ -47,7 +47,7 @@ export default class Note extends Component {
         </div>
         <div>
           <label>Link</label>
-          <a href={note.link} rel="noopener noreferrer" target="_blank">{this.renderLink(note.link)}</a>
+          <a href={note.link} rel="noopener noreferrer" target="_blank"><span>{this.renderLink(note.link)}</span></a>
         </div>
         <div>
           <label>Notes</label>

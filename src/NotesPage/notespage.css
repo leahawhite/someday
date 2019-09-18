@@ -58,6 +58,20 @@
   border-radius: 8px;
 }
 
+@media only screen and (max-width: 500px) {
+  .notelist-header h2 {
+    font-size: 18px;
+  }
+
+  .notelist {
+    max-width: 250px;
+  }
+
+  .sort-results {
+    height: 2.5em;
+  }
+}
+
 @media only screen and (min-width: 600px) {
   .sort-results-form button {
     font-size: 18px;

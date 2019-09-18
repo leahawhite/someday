@@ -72,6 +72,16 @@ button:focus {
   margin-bottom: 10px;
 }
 
+@media only screen and (max-width: 320px) {
+  .login-header p {
+    font-size: 16px;
+  }
+
+  .login-header h1 {
+    font-size: 22px;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .login, .signup {
     width: 450px;

@@ -6,7 +6,6 @@ import './topnav.css'
 class TopNav extends Component {
   static defaultProps = {
     onLogout: () => {},
-    loggedIn: Boolean
   }
 
   renderLogoutLink() {
@@ -59,5 +58,4 @@ export default withRouter(TopNav)
 
 TopNav.propTypes = {
   onLogout: PropTypes.func.isRequired,
-  loggedIn: PropTypes.func
 }
