@@ -10,7 +10,6 @@
 
 .note a {
   word-wrap: break-all;
-  color: 
 }
 
 .note:hover {
@@ -45,12 +44,16 @@
 .note-buttons {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .note-buttons button {
   margin-right: 10px;
   width: 85px;
+}
+
+.note-buttons button:nth-child(3) {
+  margin-right: 0;
 }
 
 .fave {
@@ -61,11 +64,34 @@
   display: none;
 }
 
-@media only screen and (min-width: 510px) {
+@media only screen and (max-width: 320px) {
+  .note-btn {
+    padding: .5rem .5rem;
+    font-size: .85rem;
+  }
+
+  .note label, .note span, .note button, .note time {
+    font-size: 14px;
+  }
+
+  .note label {
+    margin-right: 5px;
+  }
+
+  .note-buttons {
+    margin: 10px;
+  }
+
+  .note-buttons button {
+    margin-right: 10px;
+    width: 85px;
+  }
+}
+
+@media only screen and (min-width: 500px) {
   .note-buttons {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 10px;
   }
 
   .note-buttons button {
