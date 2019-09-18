@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import TokenService from '../services/token-service';
 import AuthApiService from '../services/auth-api-service';
 import './loginpage.css'
 
 export default class LoginPage extends Component {
   static defaultProps = {
-    history: {
-      push: () => {},
-    }
+    onLogin: () => {},
   }
   state = {
     error: null
@@ -79,4 +78,8 @@ export default class LoginPage extends Component {
       </div>
     )
   }
+}
+
+LoginPage.propTypes = {
+  onLogin: PropTypes.func.isRequired
 }

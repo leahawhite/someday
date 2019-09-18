@@ -7,9 +7,13 @@ import Button from '../Button/Button';
 import Note from '../Note/Note';
 import NoteForm from '../NoteForm/NoteForm';
 import NotesApiService from '../services/notes-api-service';
+import PropTypes from 'prop-types';
 import './notespage.css';
 
 class NotesPage extends Component {
+  static defaultProps = {
+    folders: [],
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -148,3 +152,7 @@ class NotesPage extends Component {
 }
 
 export default withRouter(NotesPage)
+
+NotesPage.propTypes = {
+  folders: PropTypes.array.isRequired
+}

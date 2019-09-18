@@ -4,6 +4,7 @@ import Spinner from '../Spinner/Spinner';
 import NotesContext from '../context/NotesContext';
 import Button from '../Button/Button';
 import NotesApiService from '../services/notes-api-service';
+import PropTypes from 'prop-types';
 import './addnotepage.css'
 
 class AddNotePage extends Component {
@@ -110,6 +111,12 @@ class AddNotePage extends Component {
       </section>
     )
   }
+}
+
+AddNotePage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
 export default withRouter(AddNotePage)
