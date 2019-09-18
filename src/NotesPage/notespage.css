@@ -58,7 +58,7 @@
   border-radius: 8px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 320px) {
   .notelist-header h2 {
     font-size: 18px;
   }
