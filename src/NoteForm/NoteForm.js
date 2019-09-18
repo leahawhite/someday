@@ -5,13 +5,6 @@ import NotesApiService from '../services/notes-api-service';
 import './noteform.css'
 
 export default class NoteForm extends Component {
-  static defaultProps = {
-    onSubmit: () => {},
-    cancelEdit: () => {},
-    changeInput: () => {},
-    updatedNote: {}
-  }
-
   static contextType = NotesContext
 
   handleSubmit = e => {

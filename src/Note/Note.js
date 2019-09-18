@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
 import Moment from 'react-moment';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './note.css';
 
@@ -64,4 +65,11 @@ export default class Note extends Component {
       </div>
     )
   }
+}
+
+Note.propTypes = {
+  note: PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onArchive: PropTypes.func.isRequired
 }

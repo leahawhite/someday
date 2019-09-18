@@ -18,7 +18,6 @@ class App extends Component {
     this.state = {
       hasError: false,
       loggedIn: TokenService.getAuthToken(),
-      redirect: false,
       folders: [],
       selectedFolderId: null,
     }

@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Folder from '../Folder/Folder';
+import PropTypes from 'prop-types';
 import './sidenav.css'
 
 class SideNav extends Component {
   static defaultProps = {
-    folders: []
+    folders: [],
+    onFolderSelect: () => {},
+    location: {
+      pathname: '',
+    }
   }
 
   constructor(props) {
@@ -70,3 +75,11 @@ class SideNav extends Component {
 }
 
 export default withRouter(SideNav)
+
+SideNav.propTypes = {
+  folders: PropTypes.array.isRequired,
+  onFolderSelect: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '../Button/Button';
+import PropTypes from 'prop-types';
 import './emptyfolder.css';
 
 export default class EmptyFolder extends Component {
@@ -23,4 +24,12 @@ export default class EmptyFolder extends Component {
       </div>
     )
   }
+}
+
+EmptyFolder.propTypes = {
+  selectedFolder: PropTypes.shape({
+    id: PropTypes.number,
+    icon: PropTypes.string,
+    text: PropTypes.string
+  })  
 }

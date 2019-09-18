@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './topnav.css'
 
 class TopNav extends Component {
@@ -55,3 +56,8 @@ class TopNav extends Component {
 }
 
 export default withRouter(TopNav)
+
+TopNav.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+  loggedIn: PropTypes.func
+}
