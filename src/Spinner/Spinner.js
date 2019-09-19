@@ -1,6 +1,6 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import './spinner.css'
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import './spinner.css';
 
 export default () => 
   <div className="spinner">
