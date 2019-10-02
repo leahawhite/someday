@@ -12,7 +12,13 @@ From the landing page, users must either log in with the demo to explore or sign
 
 ## Link to App
 
-[https://someday.now.sh/](https://someday.now.sh/)
+[https://someday.leahawhite.now.sh/](https://someday.leahawhite.now.sh/)
+
+## Link to Server
+
+[https://github.com/leahawhite/someday-api](https://github.com/leahawhite/someday-api)
+
+https://github.com/leahawhite/kid-friendly-pdx-api
 
 ## Screenshots
 
@@ -45,5 +51,9 @@ This application utilizes JWT authentication.
 - CSS
 - JavaScript
 - React
+- Node.js
+- Express
+- Knex.js
+- PostgreSQL
 - Jest
 - Enzyme
