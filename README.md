@@ -18,8 +18,6 @@ From the landing page, users must either log in with the demo to explore or sign
 
 [https://github.com/leahawhite/someday-api](https://github.com/leahawhite/someday-api)
 
-https://github.com/leahawhite/kid-friendly-pdx-api
-
 ## Screenshots
 
 Dashboard
