@@ -7,7 +7,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://someday.leahawhite.now.sh/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
